@@ -1,4 +1,5 @@
 #include "msp430g2553.h"
+#include "SSdisp.h"
 
 /* Timer overflow interrupt example
  * Timer counter is in UP continuous mode i.e. (0-0xFFFF)
@@ -52,13 +53,7 @@
 #define mask(x)     (1<<(x))
 
 
-/*Timer Useful definitions*/
 
-/* Timer Counter Modes */
-#define TIMER_STOP       MC_0   // Stop
-#define TIMER_UP         MC_1   // Up to CCR0
-#define TIMER_CONTINUOUS MC_2   // Up to 0xFFFF
-#define TIMER_UPDOWM     MC_3   // Up to CCR0 Down to 0
 
 /**
  * main.c
@@ -95,9 +90,11 @@ int main(void)
 #pragma vector=TIMER0_A0_VECTOR        //Interrupt Service Routine (ISR) for CCR0 (only)
 __interrupt void isr_myccr(void)
 {
-    volatile int dummy;
-              dummy=(TA0IV);            // Clear Interrupt flag
-    LED_PORT^=(1<<GREEN_LED);   // Toggle led State 1/(2^20/(8*1000))=7.629ms
+    TACTL &= ~TAIFG;    // Clear interrupt flag
+    LED_PORT ^= (1<<GREEN_LED);   // Toggle led State 1/(2^20/(8*1000))=7.629ms
+
+    unsigned int adcval;
+    adcval = readADC();|
 
 }
 
@@ -113,4 +110,13 @@ void timerInitialization(uint16_t period, uint16_t cycleTime)
  
     TA0CCR1 = cycleTime; // Time ON
     TA0CCTL1 = OUTMOD_7; // Reset/set mode
+}
+
+void timerStop(void)
+{
+ TA0CTL = TASSEL_2; // Stop timer.
+}
+void timerStart(void)
+{
+ TA0CTL = TASSEL_2 | MC_1; // Start timer.
 }
