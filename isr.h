@@ -30,7 +30,7 @@
  * VARIABLE PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: Declarar prototipos de variables globales aquí (ej: extern unsigned int anio_actual;)+
+// +ej: Declarar prototipos de variables globales aquï¿½ (ej: extern unsigned int anio_actual;)+
 
 
 /*******************************************************************************
@@ -38,13 +38,20 @@
  ******************************************************************************/
 
 /**
- * @brief Envía una función para que se ejecute en la rutina de servicio de interrupción
- * @param function Puntero a la función que se ejecutará
- * @param period Período de ejecución de la función en número de interrupciones (ej: 1 = en cada interrupción, 2 = en cada 2 interrupciones, etc.)
+ * @brief Envï¿½a una funciï¿½n para que se ejecute en la rutina de servicio de interrupciï¿½n
+ * @param function Puntero a la funciï¿½n que se ejecutarï¿½
+ * @param period Perï¿½odo de ejecuciï¿½n de la funciï¿½n en nï¿½mero de interrupciones (ej: 1 = en cada interrupciï¿½n, 2 = en cada 2 interrupciones, etc.)
  */
 void send_to_isr(void (*function)(void), unsigned int period);
 
-// +ej: Declarar prototipos de funciones globales aquí (ej: char lcd_goto (int fil, int col);)+
+/**
+ * @brief Envï¿½a una funciï¿½n para que se ejecute en la rutina de servicio de interrupciï¿½n del timer A
+ * @param function Puntero a la funciï¿½n que se ejecutarï¿½
+ * @param period Perï¿½odo de ejecuciï¿½n de la funciï¿½n en nï¿½mero de interrupciones (ej: 1 = en cada interrupciï¿½n, 2 = en cada 2 interrupciones, etc.)
+ */
+void send_to_timer_isr (void(*function)(void), unsigned int period);
+
+// +ej: Declarar prototipos de funciones globales aquï¿½ (ej: char lcd_goto (int fil, int col);)+
 
 
 /*******************************************************************************

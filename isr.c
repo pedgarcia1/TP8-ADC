@@ -36,32 +36,38 @@ typedef struct
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 
-// +ej: Declarar variables globales aquí (ej: unsigned int anio_actual;)+
+// +ej: Declarar variables globales aquï¿½ (ej: unsigned int anio_actual;)+
 
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: Declarar prototipos de funciones privadas aquí (ej: static void falta_envido (int);)+
+// +ej: Declarar prototipos de funciones privadas aquï¿½ (ej: static void falta_envido (int);)+
 
 
 /*******************************************************************************
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: Definir variables ROM const aquí (ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};)+
+// +ej: Definir variables ROM const aquï¿½ (ej: static const int temperaturas_medias[4] = {23, 26, 24, 29};)+
 
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 
-// +ej: Definir variables estáticas aquí (ej: static int temperaturas_actuales[4];)+
+// +ej: Definir variables estï¿½ticas aquï¿½ (ej: static int temperaturas_actuales[4];)+
 
 isr_t isr_vector[10];
 static isr_t *vector_ptr = isr_vector;
 static unsigned int length = 0;
+
+isr_t timer_isr_vector[10];
+static isr_t *timer_vector_ptr = timer_isr_vector;
+static unsigned int length_timer = 0;
+
+
 
 /*******************************************************************************
  *******************************************************************************
@@ -71,11 +77,20 @@ static unsigned int length = 0;
 
 void send_to_isr (void(*function)(void), unsigned int period) {
 
-    // Añadir la función y su período al vector de ISR
+    // Aï¿½adir la funciï¿½n y su perï¿½odo al vector de ISR
     vector_ptr[length].function_ptr = function;
     vector_ptr[length].counter_reset = period;
     vector_ptr[length].counter = period;
     length++;
+}
+
+void send_to_timer_isr (void(*function)(void), unsigned int period) {
+
+    // Aï¿½adir la funciï¿½n y su perï¿½odo al vector de ISR
+    timer_vector_ptr[length_timer].function_ptr = function;
+    timer_isr_vector[length_timer].counter_reset = period;
+    timer_isr_vector[length_timer].counter = period;
+    length_timer++;
 }
 
 /*******************************************************************************
@@ -97,4 +112,21 @@ __interrupt void WDT_ISR(void) {
             vector_ptr[i].counter = vector_ptr[i].counter_reset;
         }
     }
+}
+
+// Timer A interrupt service routine
+#pragma vector=TIMER0_A0_VECTOR        //Interrupt Service Routine (ISR) for CCR0 (only)
+__interrupt void TIMER_ISR(void)
+{
+    TACTL &= ~TAIFG;    // Clear interrupt flag for Timer A
+
+    // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
+    for(i = 0; i<length; i++) {
+        timer_vector_ptr[i].counter--;
+        if (!timer_vector_ptr[i].counter) {
+            timer_vector_ptr[i].function_ptr();
+            timer_vector_ptr[i].counter = timer_vector_ptr[i].counter_reset;
+        }
+    }
+
 }
