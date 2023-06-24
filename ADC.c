@@ -1,4 +1,9 @@
 #include "ADC.h" 
+#include "msp430g2553.h"
+
+#define N_BITS 1024
+
+adc_t adc_data;
 
 void adcInit(void)
 {
@@ -11,16 +16,29 @@ void adcInit(void)
 
     /* Enable  P1.7 pin as Analog innput (A7) */
     ADC10AE0 |= 0x80; // P1.7 ADC option select
+
+	send_to_timer_isr(readADC, 1);
+	adc_data.vmax = 3.3;
+	adc_data.vmin = 0;
 }
 
 unsigned int readADC(void)
 {
-	unsigned int adcval;
+	
 	ADC10CTL0 |= ENC + ADC10SC; // Enable converter & Start of conversion
 	// chequear esta parte de busy
 	while (ADC10CTL1 & BUSY)
 	{ /* do nothing */ } // Wait if ADC10 core is active
-	adcval=ADC10MEM;  // Read adc value
-	return adcval;
+	adc_data.value=ADC10MEM;  // Read adc value
+	adc2voltage()
+	return adc_data.value;
+
 }
 
+void adc2voltage(void){
+	adc_data.voltage = ((adc_data.vmax - adc_data.vmin)/N_BITS)*adc_data.value;
+}
+
+float getVoltage(){
+	return adc_data.voltage;
+}

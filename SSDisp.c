@@ -12,6 +12,7 @@
 #include "SSDisp.h"
 #include "board.h"
 #include "isr.h"
+#include <math.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -33,7 +34,7 @@
  * ROM CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 const int digitArray[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
-// Arreglo con los valores hexadecimales correspondientes a cada dígito (0-9)
+// Arreglo con los valores hexadecimales correspondientes a cada dï¿½gito (0-9)
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -72,12 +73,12 @@ void displayInit(selected_mode){
 }
 
 /**
- * @brief Imprime un dígito en una posición específica
- * @param val El valor del dígito a imprimir
- * @param pos La posición en la que se imprimirá el dígito
+ * @brief Imprime un dï¿½gito en una posiciï¿½n especï¿½fica
+ * @param val El valor del dï¿½gito a imprimir
+ * @param pos La posiciï¿½n en la que se imprimirï¿½ el dï¿½gito
  */
 void printDigit(int pos){
-    // Configurar los pines del display para mostrar el dígito correspondiente
+    // Configurar los pines del display para mostrar el dï¿½gito correspondiente
     gpioWrite(Disp_a, display_show[pos] & 1 << 0);
     gpioWrite(Disp_b, display_show[pos] & 1 << 1);
     gpioWrite(Disp_c, display_show[pos] & 1 << 2);
@@ -111,7 +112,7 @@ void displayLocked(){
 }
 
 /**
- * @brief Rutina de interrupción para el control del display
+ * @brief Rutina de interrupciï¿½n para el control del display
  */
 void displayBlinkISR(){
     if (frame > 3)
@@ -136,11 +137,11 @@ void displayStaticISR(){
 }
 
 /**
- * @brief Apaga el dígito en la posición especificada
- * @param pos La posición del dígito a apagar
+ * @brief Apaga el dï¿½gito en la posiciï¿½n especificada
+ * @param pos La posiciï¿½n del dï¿½gito a apagar
  */
 void printOff(int pos){
-    // Apagar los pines del display correspondientes al dígito especificado
+    // Apagar los pines del display correspondientes al dï¿½gito especificado
     gpioWrite(Disp_a, 0);
     gpioWrite(Disp_b, 0);
     gpioWrite(Disp_c, 0);
@@ -155,7 +156,7 @@ void printOff(int pos){
 
 /**
  * @brief Establece los valores a mostrar en el display
- * @param show[] Arreglo de 4 elementos con los valores a mostrar en cada posición
+ * @param show[] Arreglo de 4 elementos con los valores a mostrar en cada posiciï¿½n
  */
 void setDisplay(uint8_t show[]){
     digit2hexa(show[0], 0);
@@ -165,20 +166,38 @@ void setDisplay(uint8_t show[]){
 }
 
 /**
- * @brief Establece el dígito activo en el display
- * @param active La posición del dígito a activar
+ * @brief Establece el dï¿½gito activo en el display
+ * @param active La posiciï¿½n del dï¿½gito a activar
  */
 void setActive(uint8_t active){
     display_active = active;
 }
 
 /**
- * @brief Convierte un dígito decimal en su valor hexadecimal correspondiente
- * @param val El dígito decimal
- * @param pos La posición en la que se almacenará el valor hexadecimal
+ * @brief Convierte un dï¿½gito decimal en su valor hexadecimal correspondiente
+ * @param val El dï¿½gito decimal
+ * @param pos La posiciï¿½n en la que se almacenarï¿½ el valor hexadecimal
  */
 void digit2hexa(int val, int pos){
     display_show[pos] = digitArray[val];
+}
+
+void setDisplay_float(float value){
+    uint8_t integer_digits = (int)log10(value) + 1;
+
+    uint8_t i;
+    uint8_t j;
+
+    for (i = 0; i < 4; i++)
+    {
+        display_show[i] = (int) (value/pow(10,integer_digits-1-i));
+        
+        for (j = 0; j < i; j++)
+        {
+            display_show[i] -= display_show[j]*pow(10, j-i);
+        }
+        
+    }
 }
 
 /*******************************************************************************

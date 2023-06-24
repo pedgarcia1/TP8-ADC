@@ -18,7 +18,7 @@
  ******************************************************************************/
 #define BLINK_SPEED 500
 #define BLINK_LIMIT 32768
-// Velocidad de parpadeo y límite para el parpadeo del dígito activo
+// Velocidad de parpadeo y lï¿½mite para el parpadeo del dï¿½gito activo
 
 #define BLINK 0
 #define STATIC 1
@@ -37,8 +37,8 @@ uint8_t status2;
  ******************************************************************************/
 
 /**
- * @brief Imprime un dígito en una posición específica
- * @param pos La posición del dígito a imprimir
+ * @brief Imprime un dï¿½gito en una posiciï¿½n especï¿½fica
+ * @param pos La posiciï¿½n del dï¿½gito a imprimir
  */
 void printDigit(int pos);
 
@@ -49,18 +49,18 @@ void displayOpen(void);
 
 /**
  * @brief Establece los valores a mostrar en el display
- * @param show[] Arreglo de 4 elementos con los valores a mostrar en cada posición
+ * @param show[] Arreglo de 4 elementos con los valores a mostrar en cada posiciï¿½n
  */
 void setDisplay(uint8_t show[]);
 
 /**
- * @brief Establece el dígito activo en el display
- * @param active La posición del dígito a activar
+ * @brief Establece el dï¿½gito activo en el display
+ * @param active La posiciï¿½n del dï¿½gito a activar
  */
 void setActive(uint8_t active);
 
 /**
- * @brief Rutina de interrupción para el control del display
+ * @brief Rutina de interrupciï¿½n para el control del display
  */
 void displayBlinkISR(void);
 
@@ -68,13 +68,13 @@ void displayStaticISR(void);
 
 /**
  * @brief Inicializa el controlador del display de siete segmentos
- * @param selected_mode Indica el modo en el que se va a utilizar el display. Con un dígito activo (BLINK) o sin (STATIC)
+ * @param selected_mode Indica el modo en el que se va a utilizar el display. Con un dï¿½gito activo (BLINK) o sin (STATIC)
  */
 void displayInit(uint8_t selected_mode);
 
 /**
- * @brief Apaga el dígito en la posición especificada
- * @param pos La posición del dígito a apagar
+ * @brief Apaga el dï¿½gito en la posiciï¿½n especificada
+ * @param pos La posiciï¿½n del dï¿½gito a apagar
  */
 void printOff(int pos);
 
@@ -84,11 +84,17 @@ void printOff(int pos);
 void displayLocked(void);
 
 /**
- * @brief Convierte un dígito decimal en su valor hexadecimal correspondiente
- * @param val El dígito decimal
- * @param pos La posición en la que se almacenará el valor hexadecimal
+ * @brief Convierte un dï¿½gito decimal en su valor hexadecimal correspondiente
+ * @param val El dï¿½gito decimal
+ * @param pos La posiciï¿½n en la que se almacenarï¿½ el valor hexadecimal
  */
 void digit2hexa(int val, int pos);
+
+/**
+ * @brief Separa un numero float en 4 digitos significativos
+ * @param value El numero float que se desea convertir
+ */
+void setDisplay_float(float value);
 /*******************************************************************************
  ******************************************************************************/
 
