@@ -182,8 +182,9 @@ void digit2hexa(int val, int pos){
     display_show[pos] = digitArray[val];
 }
 
-void setDisplay_float(float value){
-    uint8_t integer_digits = (int)log10(value) + 1;
+void setDisplay_float(float number){
+    
+    /*uint8_t integer_digits = (int)log10(value) + 1;
 
     uint8_t i;
     uint8_t j;
@@ -197,6 +198,39 @@ void setDisplay_float(float value){
             display_show[i] -= display_show[j]*pow(10, j-i);
         }
         
+    }*/
+
+    /*char numberString[DISPLAY_DIGITS+1];
+    sprintf(numberString, "%f", number);
+    for (int i = 0; numberString[i] != '\0' ; i++) {
+        if (numberString[i] == '.' || numberString[i] == '-') {
+            continue;
+        }
+        int digit = atoi(&numberString[i]);
+        display_show[i] = digit;
+        
+    }*/
+
+    int integerPart = (int)number;
+    float fractionalPart = number - integerPart;
+
+    uint8_t integer_digits = (int)log10(number) + 1;
+
+    // Extraer los dígitos de la parte entera
+    int temp = abs(integerPart);
+    int digitCount = (integerPart == 0) ? 1 : (int)log10(temp) + 1;
+    for (int i = digitCount - 1; i >= 0; i--) {
+        int digit = temp / (int)pow(10, i);
+        display_show[digitCount-1-i] = digit;
+        temp %= (int)pow(10, i);
+    }
+
+    // Extraer los dígitos de la parte fraccionaria
+    while (fractionalPart != 0) {
+        fractionalPart *= 10;
+        int digit = (int) fractionalPart;
+        display_show[digitCount++] = digit;
+        fractionalPart -= digit;
     }
 }
 
