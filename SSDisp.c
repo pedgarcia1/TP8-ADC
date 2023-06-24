@@ -53,7 +53,7 @@ uint8_t show[4];
 /**
  * @brief Inicializa el controlador del display de siete segmentos
  */
-void displayInit(){
+void displayInit(selected_mode){
     // Configurar los pines de control del display como salidas
     gpioMode (Disp_a, OUTPUT);
     gpioMode (Disp_b, OUTPUT);
@@ -65,7 +65,10 @@ void displayInit(){
     gpioMode (Disp_sel0, OUTPUT);
     gpioMode (Disp_sel1, OUTPUT);
 
-    send_to_isr(displayISR, 70);
+    if (selected_mode == BLINK)
+        send_to_isr(displayBlinkISR, 70);
+    else if(selected_mode == STATIC)
+        send_to_isr(displayStaticISR, 70);
 }
 
 /**
@@ -110,7 +113,7 @@ void displayLocked(){
 /**
  * @brief Rutina de interrupción para el control del display
  */
-void displayISR(){
+void displayBlinkISR(){
     if (frame > 3)
         frame = 0;
     flag_active = flag_active + BLINK_SPEED;
@@ -118,6 +121,15 @@ void displayISR(){
     if (flag_active > BLINK_LIMIT && frame == display_active)
         printOff(frame);
     else
+        printDigit(frame);
+
+    frame++;
+}
+
+void displayStaticISR(){
+    if (frame > 3)
+        frame = 0;
+
         printDigit(frame);
 
     frame++;

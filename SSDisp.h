@@ -20,6 +20,8 @@
 #define BLINK_LIMIT 32768
 // Velocidad de parpadeo y límite para el parpadeo del dígito activo
 
+#define BLINK 0
+#define STATIC 1
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
@@ -60,12 +62,15 @@ void setActive(uint8_t active);
 /**
  * @brief Rutina de interrupción para el control del display
  */
-void displayISR(void);
+void displayBlinkISR(void);
+
+void displayStaticISR(void);
 
 /**
  * @brief Inicializa el controlador del display de siete segmentos
+ * @param selected_mode Indica el modo en el que se va a utilizar el display. Con un dígito activo (BLINK) o sin (STATIC)
  */
-void displayInit(void);
+void displayInit(uint8_t selected_mode);
 
 /**
  * @brief Apaga el dígito en la posición especificada
