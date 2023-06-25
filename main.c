@@ -24,6 +24,7 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 unsigned int voltage;
+uint8_t lightState;
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -35,6 +36,8 @@ void AppRun(void);
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
 #define EJERCICIO 2
+#define UPPER_VOLTAGE 2;
+#define LOWER_VOLTAGE 1.3;
 
 /*******************************************************************************
  *******************************************************************************
@@ -57,7 +60,7 @@ void main(void)
     // NO TOCAR
 }
 
-#if EJERICCIO == 1
+#if EJERCICIO == 1
 void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
@@ -76,7 +79,7 @@ void AppRun(void)
     setDisplay_float(voltage);
 
 }
-#elif EJERICCIO == 2
+#elif EJERCICIO == 2
 
 void appInit(void)
 {
@@ -86,29 +89,32 @@ void appInit(void)
     displayInit(STATIC);
     adcInit();
     ledsInit(OFF);
-    
+    lightState = OFF;
 }   
 
-void appRun(void)
+void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
-    // Loop (se ejecuta constantemente en un ciclo infinito)
     voltage = getVoltage();
 
     setDisplay_float(voltage);
 
-    if (voltage > 3.3/2)
+    if (lightState == OFF && voltage > UPPER_VOLTAGE)
     {
-        setLeds(ON);
-    }else if (voltage <= 3.3/2)
+        lightState = ON;
+        ledsInit(ON);
+    }
+    else if (lightState == ON && voltage < LOWER_VOLTAGE)
     {
-        setLeds(OFF);
+        lightState = OFF;
+        ledsInit(OFF);
     }
     
+
 }
 
-#elif EJERICCIO == 3
+#elif EJERCICIO == 3
 
-#endif // EJERICCIO
+#endif // EJERCICIO
 
 
 /*******************************************************************************
