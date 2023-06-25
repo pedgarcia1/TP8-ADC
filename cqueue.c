@@ -1,17 +1,10 @@
 /* Circular Queue */
 
-
-
 #include "cqueue.h"
 	
-
-
 static unsigned char buffer[QSIZE];  // storage for circuar queue (static)
 static unsigned int  news;	    	 // How many "news" are remaining in Queue
 static unsigned char *pin,*pout;     // input and output pointers 	
-
-
-
 
 
 /*

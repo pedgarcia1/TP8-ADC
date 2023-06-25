@@ -38,41 +38,28 @@ void Init_uart(void)
 
 }
 
+void putChar(char c){
+    UCA0TXBUF = c;
+}
 
-
-
-void putChar(char c)
-    {
-        UCA0TXBUF = c;
-    }
-
-int getTXStatus(void)
-{
+int getTXStatus(void){
     return (UCA0IFG & UCTXIFG);
 }
 
-
-
-char getChar(void)
-{
+char getChar(void){
     unsigned char rxdata;
     PullQueue(&rxdata);
     return rxdata;
 }
 
-int getRXStatus(void)
-{
+int getRXStatus(void){
     return(QueueStatus());
-
 }
 
-
-
-
 #pragma vector=USCI_A0_VECTOR
-__interrupt void UART_A0_ISR(void)
-
-{   volatile static int j=10;
+__interrupt void UART_A0_ISR(void){
+    
+    volatile static int j=10;
     volatile int dummy;
                  dummy=(UCA0IV);            // Clear Interrupt all interrupt flags but ADCIFG0
 
@@ -103,13 +90,3 @@ __interrupt void UART_A0_ISR(void)
     }
 
 }
-
-
-
-
-
-
-
-
-
-

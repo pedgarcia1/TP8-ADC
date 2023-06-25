@@ -39,6 +39,10 @@ void adc2voltage(void){
 	adc_data.voltage = ((adc_data.vmax - adc_data.vmin)/N_BITS)*adc_data.value;
 }
 
-float getVoltage(){
+float getVoltage(void){
 	return adc_data.voltage;
+}
+
+uint16_t getValue(void){
+	return adc_data.value;
 }
