@@ -44,7 +44,7 @@ uint8_t display_active;
 uint8_t frame;
 uint16_t flag_active;
 uint8_t show[4];
-uint8_t display_coma;
+uint8_t display_dot;
 
 /*******************************************************************************
  *******************************************************************************
@@ -64,6 +64,7 @@ void displayInit(selected_mode){
     gpioMode (Disp_e, OUTPUT);
     gpioMode (Disp_f, OUTPUT);
     gpioMode (Disp_g, OUTPUT);
+    gpioMode (Disp_dot, OUTPUT);
     gpioMode (Disp_sel0, OUTPUT);
     gpioMode (Disp_sel1, OUTPUT);
 
@@ -87,6 +88,7 @@ void printDigit(int pos){
     gpioWrite(Disp_e, display_show[pos] & 1 << 4);
     gpioWrite(Disp_f, display_show[pos] & 1 << 5);
     gpioWrite(Disp_g, display_show[pos] & 1 << 6);
+    gpioWrite(Disp_dot, pos == display_dot);
 
     gpioWrite(Disp_sel0, pos & 1 << 0);
     gpioWrite(Disp_sel1, pos & 1 << 1);
@@ -185,7 +187,7 @@ void digit2hexa(int val, int pos){
 
 void setDisplay_float(float number){
     
-    display_coma = (int)log10(value) + 1;
+    display_dot = (int)log10(value) + 1;
     uint16_t digit;
 
     uint8_t i;
@@ -194,7 +196,7 @@ void setDisplay_float(float number){
 
     for (i = 0; i < 4; i++)
     {
-        digit = (uint16_t) ((number)/pow(10,display_coma-1-i));
+        digit = (uint16_t) ((number)/pow(10,display_dot-1-i));
 
         display_show[i] = digit - ((uint16_t) (digit/10))*10;
         
