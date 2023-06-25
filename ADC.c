@@ -30,7 +30,7 @@ unsigned int readADC(void)
 	while (ADC10CTL1 & BUSY)
 	{ /* do nothing */ } // Wait if ADC10 core is active
 	adc_data.value=ADC10MEM;  // Read adc value
-	adc2voltage()
+	adc2voltage();
 	return adc_data.value;
 
 }
