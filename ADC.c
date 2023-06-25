@@ -15,7 +15,7 @@ void adcInit(void)
     ADC10CTL1 = INCH_7; // input A7
 
     /* Enable  P1.7 pin as Analog innput (A7) */
-    ADC10AE0 |= 0x80; // P1.7 ADC option select
+    ADC10AE0 |= ADC_PIN; // P1.7 ADC option select
 
 	send_to_timer_isr(readADC, 1);
 	adc_data.vmax = 3.3;
@@ -30,7 +30,7 @@ unsigned int readADC(void)
 	while (ADC10CTL1 & BUSY)
 	{ /* do nothing */ } // Wait if ADC10 core is active
 	adc_data.value=ADC10MEM;  // Read adc value
-	adc2voltage()
+	adc2voltage();
 	return adc_data.value;
 
 }

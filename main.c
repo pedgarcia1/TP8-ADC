@@ -14,6 +14,7 @@
 #include "SSDisp.h"
 #include "hardware.h"
 #include "ADC.h"
+#include "boardleds.h"
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -33,7 +34,7 @@ void AppRun(void);
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-
+#define EJERCICIO 2
 
 /*******************************************************************************
  *******************************************************************************
@@ -56,6 +57,7 @@ void main(void)
     // NO TOCAR
 }
 
+#if EJERICCIO == 1
 void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
@@ -74,7 +76,39 @@ void AppRun(void)
     setDisplay_float(voltage);
 
 }
+#elif EJERICCIO == 2
 
+void appInit(void)
+{
+    // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
+    // Inicializaci�n del display
+    setDisplay([0, 0, 0, 0]);
+    displayInit(STATIC);
+    adcInit();
+    ledsInit(OFF);
+    
+}   
+
+void appRun(void)
+{
+    // Loop (se ejecuta constantemente en un ciclo infinito)
+    voltage = getVoltage();
+
+    setDisplay_float(voltage);
+
+    if (voltage > 3.3/2)
+    {
+        setLeds(ON);
+    }else if (voltage <= 3.3/2)
+    {
+        setLeds(OFF);
+    }
+    
+}
+
+#elif EJERICCIO == 3
+
+#endif // EJERICCIO
 
 
 /*******************************************************************************
