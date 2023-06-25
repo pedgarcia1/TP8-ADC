@@ -44,6 +44,7 @@ uint8_t display_active;
 uint8_t frame;
 uint16_t flag_active;
 uint8_t show[4];
+uint8_t display_coma;
 
 /*******************************************************************************
  *******************************************************************************
@@ -184,21 +185,20 @@ void digit2hexa(int val, int pos){
 
 void setDisplay_float(float number){
     
-    /*uint8_t integer_digits = (int)log10(value) + 1;
+    display_coma = (int)log10(value) + 1;
+    uint16_t digit;
 
     uint8_t i;
-    uint8_t j;
+
+    
 
     for (i = 0; i < 4; i++)
     {
-        display_show[i] = (int) (value/pow(10,integer_digits-1-i));
+        digit = (uint16_t) ((number)/pow(10,display_coma-1-i));
+
+        display_show[i] = digit - ((uint16_t) (digit/10))*10;
         
-        for (j = 0; j < i; j++)
-        {
-            display_show[i] -= display_show[j]*pow(10, j-i);
-        }
-        
-    }*/
+    }
 
     /*char numberString[DISPLAY_DIGITS+1];
     sprintf(numberString, "%f", number);
@@ -211,7 +211,7 @@ void setDisplay_float(float number){
         
     }*/
 
-    int integerPart = (int)number;
+    /*int integerPart = (int)number;
     float fractionalPart = number - integerPart;
 
     uint8_t integer_digits = (int)log10(number) + 1;
@@ -231,7 +231,7 @@ void setDisplay_float(float number){
         int digit = (int) fractionalPart;
         display_show[digitCount++] = digit;
         fractionalPart -= digit;
-    }
+    }*/
 }
 
 /*******************************************************************************
