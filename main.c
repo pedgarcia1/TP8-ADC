@@ -69,9 +69,9 @@ void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
-    uint8_t dispZero[4] = {0,0,0,0};
-    setDisplay(dispZero);
+    uint8_t dispZero[4] = {1,2,3,4};
     displayInit(STATIC);
+    setDisplay(dispZero);
     adcInit();
     
 }
@@ -81,9 +81,10 @@ void AppRun(void)
     // Loop (se ejecuta constantemente en un ciclo infinito)
     voltage = getVoltage();
 
-    setDisplay_float(voltage);
+    // setDisplay_float(voltage);
 
 }
+
 #elif EJERCICIO == 2
 #define UPPER_VOLTAGE 2;
 #define LOWER_VOLTAGE 1.3;

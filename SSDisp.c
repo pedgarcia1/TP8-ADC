@@ -71,7 +71,7 @@ void displayInit(uint8_t selected_mode){
     if (selected_mode == BLINK)
         send_to_isr(displayBlinkISR, 70);
     else if(selected_mode == STATIC)
-        send_to_isr(displayStaticISR, 70);
+        send_to_isr(displayStaticISR, 1);
 }
 
 /**
