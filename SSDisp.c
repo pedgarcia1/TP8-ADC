@@ -198,8 +198,8 @@ void setDisplay_float(float value){
     {
         digit = (uint16_t) ((value)/pow(10,display_dot-1-i));
 
-        display_show[i] = digit - ((uint16_t) (digit/10))*10;
-        
+        digit = digit - ((uint16_t) (digit/10))*10;
+        digit2hexa(digit, i);
     }
 
     /*char numberString[DISPLAY_DIGITS+1];
