@@ -39,7 +39,7 @@ void AppRun(void);
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-#define EJERCICIO 1
+#define EJERCICIO 2
 
 /*******************************************************************************
  *******************************************************************************
@@ -69,9 +69,7 @@ void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
-    uint8_t dispZero[4] = {0,0,0,0};
     displayInit(STATIC);
-    setDisplay(dispZero);
     adcInit();
     timerInitialization(13100); // 100ms timer perdios for ADC interrupt
     timerStart();
@@ -88,38 +86,38 @@ void AppRun(void)
 }
 
 #elif EJERCICIO == 2
-#define UPPER_VOLTAGE 2;
-#define LOWER_VOLTAGE 1.3;
+#define UPPER_VOLTAGE 2
+#define LOWER_VOLTAGE 1.3
 
-void appInit(void)
+void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
-    setDisplay([0, 0, 0, 0]);
     displayInit(STATIC);
     adcInit();
+    timerInitialization(13100); // 100ms timer perdios for ADC interrupt
+    timerStart();
     ledsInit(OFF);
     lightState = OFF;
 }   
 
-void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
+void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
     voltage = getVoltage();
 
     setDisplay_float(voltage);
 
-    if (lightState == OFF && voltage > UPPER_VOLTAGE)
+    if((lightState == OFF) && (voltage >= UPPER_VOLTAGE))
     {
         lightState = ON;
-        ledsInit(ON);
+        setLeds(ON);
     }
-    else if (lightState == ON && voltage < LOWER_VOLTAGE)
+
+    if ((lightState == ON) && (voltage <= LOWER_VOLTAGE))
     {
         lightState = OFF;
-        ledsInit(OFF);
+        setLeds(OFF);
     }
-    
-
 }
 
 #elif EJERCICIO == 3

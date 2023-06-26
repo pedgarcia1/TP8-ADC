@@ -114,6 +114,7 @@ __interrupt void WDT_ISR(void) {
     }
 }
 
+
 // Timer A interrupt service routine
 #pragma vector=TIMER0_A0_VECTOR        //Interrupt Service Routine (ISR) for CCR0 (only)
 __interrupt void TIMER_ISR(void)
