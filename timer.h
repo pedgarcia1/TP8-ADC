@@ -12,10 +12,13 @@
 #define TIMER_CONTINUOUS MC_2   // Up to 0xFFFF
 #define TIMER_UPDOWM     MC_3   // Up to CCR0 Down to 0
 
-void timerInitialization(uint16_t period, uint16_t cycleTime);
+void timerInitialization(uint16_t period);
 
 void timerStart(void);
 
 void timerStop(void);
+
+void timerFlagClear(void);
+
 
 #endif // _TIMER_H_

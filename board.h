@@ -41,7 +41,7 @@
 #define Status1 PORTNUM2PIN(2,6)
 
 // ADC
-#define ADC_PIN PORTNUM2PIN(1, 7)
+#define ADC_PIN 0x80 // PIN 1.7 for ADC input
 
 #define SWITCH_INPUT        INPUT_PULLUP
 #define SWITCH_ACTIVE       LOW

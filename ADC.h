@@ -6,8 +6,8 @@
 
 typedef struct 
 {
-    uint16_t value;
-    float voltage;
+    volatile uint16_t value;
+    volatile float voltage;
     float vmax;
     float vmin;
 }adc_t;
@@ -15,7 +15,7 @@ typedef struct
 
 void adcInit(void);
 
-unsigned int readADC(void);
+void readADC(void);
 
 void adc2voltage(void);
 

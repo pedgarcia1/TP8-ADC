@@ -118,7 +118,6 @@ __interrupt void WDT_ISR(void) {
 #pragma vector=TIMER0_A0_VECTOR        //Interrupt Service Routine (ISR) for CCR0 (only)
 __interrupt void TIMER_ISR(void)
 {
-    TACTL &= ~TAIFG;    // Clear interrupt flag for Timer A
 
     int i;
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes

@@ -71,7 +71,7 @@ void displayInit(uint8_t selected_mode){
     if (selected_mode == BLINK)
         send_to_isr(displayBlinkISR, 70);
     else if(selected_mode == STATIC)
-        send_to_isr(displayStaticISR, 1);
+        send_to_isr(displayStaticISR, 70);
 }
 
 /**
@@ -187,20 +187,24 @@ void digit2hexa(int val, int pos){
 
 void setDisplay_float(float value){
     
-    display_dot = (int)log10(value) + 1;
+    uint8_t integer_digits;
+    integer_digits = (int)log10(value) + 1;
     uint16_t digit;
 
     uint8_t i;
 
-    
+    if (integer_digits == 0)
+        integer_digits = 1;
 
     for (i = 0; i < 4; i++)
     {
-        digit = (uint16_t) ((value)/pow(10,display_dot-1-i));
+        digit = (uint16_t) ((value)/pow(10,integer_digits-1-i));
 
         digit = digit - ((uint16_t) (digit/10))*10;
         digit2hexa(digit, i);
     }
+
+    display_dot = integer_digits - 1;
 
     /*char numberString[DISPLAY_DIGITS+1];
     sprintf(numberString, "%f", number);
