@@ -120,6 +120,7 @@ __interrupt void TIMER_ISR(void)
 {
     TACTL &= ~TAIFG;    // Clear interrupt flag for Timer A
 
+    int i;
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
     for(i = 0; i<length; i++) {
         timer_vector_ptr[i].counter--;

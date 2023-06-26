@@ -55,7 +55,7 @@ uint8_t display_dot;
 /**
  * @brief Inicializa el controlador del display de siete segmentos
  */
-void displayInit(selected_mode){
+void displayInit(uint8_t selected_mode){
     // Configurar los pines de control del display como salidas
     gpioMode (Disp_a, OUTPUT);
     gpioMode (Disp_b, OUTPUT);
@@ -185,7 +185,7 @@ void digit2hexa(int val, int pos){
     display_show[pos] = digitArray[val];
 }
 
-void setDisplay_float(float number){
+void setDisplay_float(float value){
     
     display_dot = (int)log10(value) + 1;
     uint16_t digit;
@@ -196,7 +196,7 @@ void setDisplay_float(float number){
 
     for (i = 0; i < 4; i++)
     {
-        digit = (uint16_t) ((number)/pow(10,display_dot-1-i));
+        digit = (uint16_t) ((value)/pow(10,display_dot-1-i));
 
         display_show[i] = digit - ((uint16_t) (digit/10))*10;
         

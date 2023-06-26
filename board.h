@@ -38,6 +38,7 @@
 
 // Selector leds
 #define Status0 PORTNUM2PIN(2, 4)
+#define Status1 PORTNUM2PIN(2,6)
 
 // ADC
 #define ADC_PIN PORTNUM2PIN(1, 7)

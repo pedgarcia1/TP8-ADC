@@ -1,6 +1,9 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
+#include <msp430.h>
+#include <stdint.h>
+
 /*Timer Useful definitions*/
 
 /* Timer Counter Modes */

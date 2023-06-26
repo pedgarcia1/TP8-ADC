@@ -16,7 +16,8 @@
 #include "ADC.h"
 #include "boardleds.h"
 #include "encoder.h"
-#include "uart.h"
+// #include "uart.h"
+#include "timer.h"
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -38,7 +39,7 @@ void AppRun(void);
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-#define EJERCICIO 3
+#define EJERCICIO 1
 
 /*******************************************************************************
  *******************************************************************************
@@ -68,7 +69,8 @@ void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
-    setDisplay([0, 0, 0, 0]);
+    uint8_t dispZero[4] = {0,0,0,0};
+    setDisplay(dispZero);
     displayInit(STATIC);
     adcInit();
     

@@ -19,5 +19,8 @@ unsigned int readADC(void);
 
 void adc2voltage(void);
 
+float getVoltage(void);
+
+uint16_t getValue(void);
 
 #endif // _ADC_H_

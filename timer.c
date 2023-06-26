@@ -1,9 +1,11 @@
 #include "timer.h"
 
+#include <msp430.h>
+
 void timerInitialization(uint16_t period, uint16_t cycleTime)
 {
     // Configure Timer_A0.
-    TA0CTL = TASSEL__SMCLK  | TIMER_UP | TAIE | ID__8 ; // 1Mhz para el timer
+    TA0CTL = TASSEL_2  | TIMER_UP | TAIE | ID_3 ; // 1Mhz para el timer
     TA0CCTL0 = CCIE;          // CCR0 interrupt enable
 
 
