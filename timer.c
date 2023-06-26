@@ -20,7 +20,7 @@ void timerStop(void)
 
 void timerStart(void)
 {
-    TA0CTL = TASSEL_2 | MC_1; // Start timer.
+    TA0CTL |=  MC_1; // Start timer.
 }
 
 void timerFlagClear(void)
