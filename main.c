@@ -51,7 +51,7 @@ void int2ASCII(uint8_t number);
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-#define EJERCICIO 2
+#define EJERCICIO 3
 
 /*******************************************************************************
  *******************************************************************************
@@ -151,7 +151,7 @@ void AppInit(void)
     ledsInit(OFF);
     lightState = OFF;
     tx_message[5] = '\0';
-
+    setUARTPeriod(2*uart_time);
 
 }   
 
@@ -181,12 +181,20 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
 
     if (rxFlag > 0){
-        rcv_message = getChar();
-        resetRXStatus();
-        if(rcv_message == 'C' || rcv_message == 'V'){
-            write_mode = rcv_message;
+            rcv_message = getChar();
+            resetRXStatus();
+            if(rcv_message == 'C' || rcv_message == 'V'){
+                if(rcv_message=='C'){
+                    UARTSendArray("Modo Raw",8);
+                    UARTSendArray("\n\r", 2);
+                }
+                else{
+                    UARTSendArray("Modo Volt",9);
+                    UARTSendArray("\n\r", 2);
+                }
+                write_mode = rcv_message;
+            }
         }
-    }
 
     // Enviar el mensaje
 
