@@ -22,6 +22,7 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
+uint8_t RXChar,RXFlag;
 
 
 /*******************************************************************************
@@ -74,6 +75,11 @@ void UART_init(){
 __bis_SR_register(GIE); // interrupts enabled
 }
 
+/**
+ * @brief Envia Array por UART
+ * @param *TxArray Array a enviar
+ * @param ArrayLength Largo del array
+ */
 void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength){
  // Send number of bytes Specified in ArrayLength in the array at using the hardware UART 0
  // Example usage: UARTSendArray("Hello", 5);
@@ -87,13 +93,38 @@ while(ArrayLength--){ // Loop until StringLength == 0 and post decrement
  }
 }
 
+uint8_t getRXStatus(){
+    return RXFlag;
+}
 
+void resetRXStatus(){
+    RXFlag=0;
+}
+
+uint8_t getChar(){
+    return RXChar;
+}
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
 
+/*******************************************************************************
+ *******************************************************************************
+                        INTERRUPTS
+ *******************************************************************************
+ ******************************************************************************/
+
+/**
+ * @brief Interrupt BUFFER RX
+ */
+#pragma vector=USCIAB0RX_VECTOR
+__interrupt void USCI0RX_ISR(void)
+{
+ RXFlag=1;
+ RXChar=UCA0RXBUF;
+}
 
 /******************************************************************************/
 

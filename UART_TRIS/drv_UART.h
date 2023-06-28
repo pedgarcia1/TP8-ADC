@@ -30,6 +30,9 @@
  ******************************************************************************/
 void UART_init(); //INICIALIZA EL UART
 void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength); //Send array to UART
+uint8_t getRXStatus();
+void resetRXStatus();
+uint8_t getChar();
 
 /*******************************************************************************
  ******************************************************************************/
