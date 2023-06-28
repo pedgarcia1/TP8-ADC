@@ -1,5 +1,8 @@
 #include "ADC.h" 
 #include "msp430g2553.h"
+#include "timer.h"
+#include "isr.h"
+
 
 #define N_BITS 1024
 

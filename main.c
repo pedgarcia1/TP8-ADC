@@ -18,7 +18,6 @@
 #include "encoder.h"
 #include "drv_UART.h"
 #include "timer.h"
-#include <math.h>
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -139,8 +138,6 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define UART_LLIMIT 100
 #define UART_ULIMIT 2000
 
-
-
 void appInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
@@ -181,6 +178,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
     if (rxFlag > 0){
         rcv_message = getChar();
+        resetRXStatus();
         if(rcv_message == 'C' || rcv_message == 'V'){
             write_mode = rcv_message;
         }

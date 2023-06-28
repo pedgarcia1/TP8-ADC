@@ -24,7 +24,6 @@
  ******************************************************************************/
 volatile unsigned char RXChar;
 static uint8_t RXFlag;
-static uint16_t UARTPeriod;
 unsigned char periodicTX;
 unsigned char periodicLength;
 /*******************************************************************************

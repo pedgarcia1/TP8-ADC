@@ -12,7 +12,6 @@
 #include "SSDisp.h"
 #include "board.h"
 #include "isr.h"
-#include <math.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
