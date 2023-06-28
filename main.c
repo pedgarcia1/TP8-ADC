@@ -33,7 +33,7 @@ uint8_t lightState;
 
 uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
-unsigned char tx_message[7];
+unsigned char tx_message[5];
 unsigned char rcv_message;
 uint8_t encoderFlag;
 uint8_t rxFlag;
@@ -188,7 +188,6 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     }
 
     // Enviar el mensaje
-    tx_message[5] = '\n';
 
     if (write_mode == 'C'){
         int2ASCII(value);
@@ -196,7 +195,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         float2ASCII(voltage);
     }
     }
-    setTXMessage(tx_message, 6);
+    setTXMessage(tx_message, 5);
 
     // Logica segun estado del encoder
     switch (encoderFlag) {
