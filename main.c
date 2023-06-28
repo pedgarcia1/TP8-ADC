@@ -181,8 +181,9 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
     if (rxFlag > 0){
         rcv_message = getChar();
-        if(rcv_message == 'C' || rcv_message == 'V')
+        if(rcv_message == 'C' || rcv_message == 'V'){
             write_mode = rcv_message;
+        }
     }
 
     // Enviar el mensaje
@@ -193,7 +194,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     }else{ if(write_mode == 'V'){
         float2ASCII(voltage);
     }
-
+    }
     setTXMessage(tx_message, 6);
 
     // Logica segun estado del encoder
@@ -219,7 +220,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             break;
 
     }
-
+ 
 }
 
 #endif // EJERCICIO
