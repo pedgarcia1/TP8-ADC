@@ -138,7 +138,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define UART_LLIMIT 100
 #define UART_ULIMIT 2000
 
-void appInit(void)
+void AppInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
@@ -151,7 +151,7 @@ void appInit(void)
 
 }   
 
-void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
+void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
     voltage = getVoltage();
     value = getValue();
