@@ -22,8 +22,6 @@ void adcInit(void)
     ADC10AE0 = ADC_PIN; // P1.7 ADC option select
 
 	send_to_timer_isr(readADC, 1);
-	adc_data.vmax = 3.66;
-	adc_data.vmin = 0;
 }
 
 void readADC(void)
