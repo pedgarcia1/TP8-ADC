@@ -42,7 +42,7 @@
  * @brief Imprime un d�gito en una posici�n espec�fica
  * @param pos La posici�n del d�gito a imprimir
  */
-void printDigit(int pos);
+void printDigit(uint8_t pos);
 
 /**
  * @brief Muestra el mensaje "OPEN" en el display
@@ -78,7 +78,7 @@ void displayInit(uint8_t selected_mode);
  * @brief Apaga el d�gito en la posici�n especificada
  * @param pos La posici�n del d�gito a apagar
  */
-void printOff(int pos);
+void printOff(uint8_t pos);
 
 /**
  * @brief Muestra el mensaje "LOCK" en el display
@@ -90,7 +90,7 @@ void displayLocked(void);
  * @param val El d�gito decimal
  * @param pos La posici�n en la que se almacenar� el valor hexadecimal
  */
-void digit2hexa(int val, int pos);
+void digit2hexa(uint8_t val, uint8_t pos);
 
 /**
  * @brief Separa un numero float en 4 digitos significativos

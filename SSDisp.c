@@ -78,7 +78,7 @@ void displayInit(uint8_t selected_mode){
  * @param val El valor del d�gito a imprimir
  * @param pos La posici�n en la que se imprimir� el d�gito
  */
-void printDigit(int pos){
+void printDigit(uint8_t pos){
     // Configurar los pines del display para mostrar el d�gito correspondiente
     gpioWrite(Disp_a, display_show[pos] & 1 << 0);
     gpioWrite(Disp_b, display_show[pos] & 1 << 1);
@@ -142,7 +142,7 @@ void displayStaticISR(){
  * @brief Apaga el d�gito en la posici�n especificada
  * @param pos La posici�n del d�gito a apagar
  */
-void printOff(int pos){
+void printOff(uint8_t pos){
     // Apagar los pines del display correspondientes al d�gito especificado
     gpioWrite(Disp_a, 0);
     gpioWrite(Disp_b, 0);
@@ -180,7 +180,7 @@ void setActive(uint8_t active){
  * @param val El d�gito decimal
  * @param pos La posici�n en la que se almacenar� el valor hexadecimal
  */
-void digit2hexa(int val, int pos){
+void digit2hexa(uint8_t val, uint8_t pos){
     display_show[pos] = digitArray[val];
 }
 
