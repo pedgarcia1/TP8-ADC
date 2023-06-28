@@ -18,6 +18,7 @@
 #include "encoder.h"
 #include "drv_UART.h"
 #include "timer.h"
+#include <math.h>
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -233,7 +234,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 void float2ASCII(float number){
 
     uint8_t integer_digits;
-    integer_digits = (int)log10(number) + 1;
+    integer_digits = (uint8_t)log10(number) + 1;
     uint16_t digit;
 
     uint8_t i;
@@ -255,11 +256,12 @@ void float2ASCII(float number){
             tx_message[1] = '.';
         }
     }
+
 }
 
 void int2ASCII(uint8_t number){
     uint8_t integer_digits;
-    integer_digits = (int)log10(number) + 1;
+    integer_digits = (uint8_t)log10(number) + 1;
     uint16_t digit;
 
     uint8_t i;
@@ -277,3 +279,4 @@ void int2ASCII(uint8_t number){
         tx_message[i] = digit + '0';
     }
 }
+

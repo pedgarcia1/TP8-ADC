@@ -187,7 +187,7 @@ void digit2hexa(int val, int pos){
 void setDisplay_float(float value){
     
     uint8_t integer_digits;
-    integer_digits = (int)log10(value) + 1;
+    integer_digits = (uint8_t)log10(value) + 1;
     uint16_t digit;
 
     uint8_t i;

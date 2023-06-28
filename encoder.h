@@ -41,7 +41,7 @@ void encoderInit(void);
  *         - CW (1) si se ha producido un movimiento en sentido horario
  *         - CCW (2) si se ha producido un movimiento en sentido antihorario
  */
-encoderStatus_t encoderISR(void);
+void encoderISR(void);
 
 /**
  * @brief Obtiene el estado actual del encoder

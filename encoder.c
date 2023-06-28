@@ -66,7 +66,7 @@ void encoderResetStatus(){
  * @brief Rutina de interrupción del encoder
  * @return El estado actual del encoder
  */
-encoderStatus_t encoderISR() {
+void encoderISR() {
     if (status == IDLE){
         A_now = gpioRead(ENC_A_PIN);
         B_now = gpioRead(ENC_B_PIN);
@@ -80,7 +80,6 @@ encoderStatus_t encoderISR() {
     }
     A_before = A_now;
     B_before = B_now;
-    return status;
 }
 
 /* LOCAL FUNCTION DEFINITIONS */
