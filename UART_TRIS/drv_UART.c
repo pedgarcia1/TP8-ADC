@@ -9,7 +9,7 @@
  ******************************************************************************/
 #include <msp430.h>
 #include "drv_UART.h"
-
+#include "isr.h"
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
@@ -22,9 +22,9 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
-uint8_t RXChar,RXFlag;
-
-
+static uint8_t RXFlag,UARTPeriod;
+unsigned char periodicTX;
+unsigned char periodicLength;
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -103,6 +103,25 @@ void resetRXStatus(){
 
 uint8_t getChar(){
     return RXChar;
+}
+
+void setUARTPeriod(uint8_t period){
+    send_to_isr(UARTPeriodic,period);
+}
+
+void UARTPeriodic(){
+ // send message periodically
+    while(periodicLength--){ // Loop until StringLength == 0 and post decrement
+     while(!(IFG2 & UCA0TXIFG)); // Wait for TX buffer to be ready for new data
+     UCA0TXBUF = *periodicTX; //Write the character at the location specified py the pointer
+     periodicTX++; //Increment the TxString pointer to point to the next character
+     }
+}
+
+void setTXMessage(unsigned char *Text, unsigned char Largo)
+    periodicTX=*Text;
+    periodicLength=Largo;
+
 }
 /*******************************************************************************
  *******************************************************************************
