@@ -7,7 +7,7 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-// hola tris
+
 #include "system.h"
 #include "gpio.h"
 #include "board.h"
@@ -28,6 +28,7 @@
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
 float voltage;
+uint16_t value;
 uint8_t lightState;
 
 /*******************************************************************************
@@ -36,8 +37,8 @@ uint8_t lightState;
 
 void AppInit(void);
 void AppRun(void);
-float2ASCII(float number);
-int2ASCII(uint8_t number);
+void float2ASCII(float number);
+void int2ASCII(uint8_t number);
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -130,8 +131,8 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define UART_LLIMIT 100
 #define UART_ULIMIT 2000
 
-uint8_t uart_time = 800;
-uint8_t write_mode = "C";
+uint16_t uart_time = 800;
+uint8_t write_mode = 'C';
 unsigned char tx_message[6];
 unsigned char rcv_message;
 uint8_t encoderFlag;
@@ -142,10 +143,9 @@ void appInit(void)
 {
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
-    setDisplay([0, 0, 0, 0]);
     displayInit(STATIC);
     adcInit();
-    Init_uart();
+    UART_init();
     ledsInit(OFF);
     lightState = OFF;
 }   
@@ -175,14 +175,14 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     rxFlag = getRXStatus();
 
 
-    if (rxFlag > 0):{
+    if (rxFlag > 0){
         rcv_message = getChar();
-        if(rcv_message == 'C' || rcv_message == 'V'):
+        if(rcv_message == 'C' || rcv_message == 'V')
             write_mode = rcv_message;
     }
 
     // Enviar el mensaje
-    tx_message[6] = '\n';
+    tx_message[5] = '\n';
 
     if (write_mode == 'C'){
         int2ASCII(value);
@@ -198,17 +198,16 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             // El encoder gira en sentido horario
             encoderResetStatus(); // Reinicia el estado del encoder
             uart_time += 100;
-            if (uart_time < UART_ULIMIT):
+            if (uart_time < UART_ULIMIT)
                 uart_time = UART_ULIMIT; 
 
             break;
 
-            break;
         case CCW:
             // El encoder gira en sentido antihorario
             encoderResetStatus(); // Reinicia el estado del encoder
             uart_time -= 100;
-            if (uart_time < UART_LLIMIT):
+            if (uart_time < UART_LLIMIT)
                 uart_time = UART_LLIMIT; 
             
             break;
@@ -227,6 +226,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
  ******************************************************************************/
 
 void float2ASCII(float number){
+
     uint8_t integer_digits;
     integer_digits = (int)log10(number) + 1;
     uint16_t digit;
@@ -242,11 +242,12 @@ void float2ASCII(float number){
 
         digit = digit - ((uint16_t) (digit/10))*10;
 
-        if (i>0)
+        if (i>0){
             tx_message[i+1] = digit + '0';
+        }
         else{
             tx_message[0] = digit + '0';
-            tx_message[1] = '.'
+            tx_message[1] = '.';
         }
     }
 }

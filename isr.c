@@ -80,7 +80,8 @@ void send_to_isr (void(*function)(void), unsigned int period) {
     // A�adir la funci�n y su per�odo al vector de ISR
 
     // Chequeo si la función ya está en el vector y reemplazo los nuevos datos
-    for (int i = 0; i < length; i++) {
+    uint8_t i;
+    for (i = 0; i < length; i++) {
         if (vector_ptr[i].function_ptr == function) {
             vector_ptr[i].counter_reset = period;
             vector_ptr[i].counter = period;

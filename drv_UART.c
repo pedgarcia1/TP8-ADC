@@ -22,7 +22,9 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
-static uint8_t RXFlag,UARTPeriod;
+volatile unsigned char RXChar;
+static uint8_t RXFlag;
+static uint16_t UARTPeriod;
 unsigned char periodicTX;
 unsigned char periodicLength;
 /*******************************************************************************
@@ -105,7 +107,7 @@ uint8_t getChar(){
     return RXChar;
 }
 
-void setUARTPeriod(uint8_t period){
+void setUARTPeriod(uint16_t period){
     send_to_isr(UARTPeriodic,period);
 }
 
@@ -113,13 +115,13 @@ void UARTPeriodic(){
  // send message periodically
     while(periodicLength--){ // Loop until StringLength == 0 and post decrement
      while(!(IFG2 & UCA0TXIFG)); // Wait for TX buffer to be ready for new data
-     UCA0TXBUF = *periodicTX; //Write the character at the location specified py the pointer
+     UCA0TXBUF = periodicTX; //Write the character at the location specified py the pointer
      periodicTX++; //Increment the TxString pointer to point to the next character
      }
 }
 
-void setTXMessage(unsigned char *Text, unsigned char Largo)
-    periodicTX=*Text;
+void setTXMessage(unsigned char *Text, unsigned char Largo){
+    periodicTX =* Text;
     periodicLength=Largo;
 
 }
