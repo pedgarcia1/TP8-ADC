@@ -1,7 +1,7 @@
 #ifndef _ADC_H_
 #define _ADC_H_
-#define VMAX
-#define VMIN
+#define VMAX 3.66
+#define VMIN 0
 
 #include "board.h"
 
