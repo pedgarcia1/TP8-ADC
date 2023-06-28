@@ -17,7 +17,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-#define LARGO_VECTOR_ISR 10
+#define LARGO_VECTOR_ISR 6
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -63,7 +63,7 @@ isr_t isr_vector[LARGO_VECTOR_ISR];
 static isr_t *vector_ptr = isr_vector;
 static unsigned int length = 0;
 
-isr_t timer_isr_vector[10];
+isr_t timer_isr_vector[3];
 static isr_t *timer_vector_ptr = timer_isr_vector;
 static unsigned int length_timer = 0;
 

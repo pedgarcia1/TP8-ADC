@@ -33,7 +33,7 @@ uint8_t lightState;
 
 uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
-unsigned char tx_message[6];
+unsigned char tx_message[7];
 unsigned char rcv_message;
 uint8_t encoderFlag;
 uint8_t rxFlag;
@@ -107,7 +107,7 @@ void AppInit(void)
     // Inicializaci�n del display
     displayInit(STATIC);
     adcInit();
-    timerInitialization(12499); // 100ms timer perdios for ADC interrupt
+    timerInitialization(TIMER_PERIOD); // 100ms timer perdios for ADC interrupt
     timerStart();
     ledsInit(OFF);
     lightState = OFF;
@@ -145,7 +145,9 @@ void AppInit(void)
     // Inicializaci�n del display
     displayInit(STATIC);
     adcInit();
-    UART_init();
+    // UART_init();
+    timerInitialization(TIMER_PERIOD); // 100ms timer perdios for ADC interrupt
+    timerStart();
     ledsInit(OFF);
     lightState = OFF;
 
@@ -169,7 +171,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         lightState = OFF;
         ledsInit(OFF);
     }
-
+/*
     // Verificar si se ha cambiado el estado del encoder
     encoderFlag = encoderGetStatus();
     
@@ -219,7 +221,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             break;
 
     }
- 
+ */
 }
 
 #endif // EJERCICIO

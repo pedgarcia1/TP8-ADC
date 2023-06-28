@@ -11,6 +11,7 @@
 #define TIMER_UP         MC_1   // Up to CCR0
 #define TIMER_CONTINUOUS MC_2   // Up to 0xFFFF
 #define TIMER_UPDOWM     MC_3   // Up to CCR0 Down to 0
+#define TIMER_PERIOD     12499
 
 void timerInitialization(uint16_t period);
 
