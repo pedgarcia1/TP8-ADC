@@ -17,7 +17,7 @@
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
 
-
+#define LARGO_VECTOR_ISR 10
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -59,7 +59,7 @@ typedef struct
 
 // +ej: Definir variables est�ticas aqu� (ej: static int temperaturas_actuales[4];)+
 
-isr_t isr_vector[10];
+isr_t isr_vector[LARGO_VECTOR_ISR];
 static isr_t *vector_ptr = isr_vector;
 static unsigned int length = 0;
 
@@ -78,6 +78,19 @@ static unsigned int length_timer = 0;
 void send_to_isr (void(*function)(void), unsigned int period) {
 
     // A�adir la funci�n y su per�odo al vector de ISR
+
+    // Chequeo si la función ya está en el vector y reemplazo los nuevos datos
+    for (int i = 0; i < length; i++) {
+        if (vector_ptr[i].function_ptr == function) {
+            vector_ptr[i].counter_reset = period;
+            vector_ptr[i].counter = period;
+            return;
+        }
+    }
+    // Chequeo si el vector esta lleno y vuelvo al inicio
+    if (length == LARGO_VECTOR_ISR) {
+        length = 0;
+    }
     vector_ptr[length].function_ptr = function;
     vector_ptr[length].counter_reset = period;
     vector_ptr[length].counter = period;
