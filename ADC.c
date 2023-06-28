@@ -8,7 +8,7 @@ adc_t adc_data;
 void adcInit(void)
 {
     /* Select Reference */
-    ADC10CTL0 = SREF_0 | ADC10SHT_2 | ADC10ON;
+    ADC10CTL0 = SREF_0 | ADC10SHT_0 | ADC10ON;
   	//  ADC10CTL0 = SREF_1 + ADC10SHT_2 + ADC10ON + REF2_5V + REFON;
 
 
