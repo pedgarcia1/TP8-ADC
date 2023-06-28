@@ -16,8 +16,9 @@
 #include "ADC.h"
 #include "boardleds.h"
 #include "encoder.h"
-// #include "uart.h"
+#include "drv_UART.h"
 #include "timer.h"
+#include <math.h>
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -35,11 +36,13 @@ uint8_t lightState;
 
 void AppInit(void);
 void AppRun(void);
+float2ASCII(float number);
+int2ASCII(uint8_t number);
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
  ******************************************************************************/
-#define EJERCICIO 2
+#define EJERCICIO 3
 
 /*******************************************************************************
  *******************************************************************************
@@ -128,11 +131,11 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define UART_ULIMIT 2000
 
 uint8_t uart_time = 800;
-uint8_t write_mode = "c";
-uint16_t tsm_message;
-uint8_t rcv_message;
+uint8_t write_mode = "C";
+unsigned char tx_message[6];
+unsigned char rcv_message;
 uint8_t encoderFlag;
-uint8_t receiverFlag;
+uint8_t rxFlag;
 uint8_t transmitterFlag;
 
 void appInit(void)
@@ -150,6 +153,7 @@ void appInit(void)
 void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
     voltage = getVoltage();
+    value = getValue();
 
     setDisplay_float(voltage);
 
@@ -166,18 +170,27 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
     // Verificar si se ha cambiado el estado del encoder
     encoderFlag = encoderGetStatus();
-    receiverFlag = getRXStatus();
     
+    // Verificar si hubo un mensaje
+    rxFlag = getRXStatus();
 
-    if (receiverFlag > 0):{
+
+    if (rxFlag > 0):{
         rcv_message = getChar();
-        if(rcv_message == "c" || rcv_message == "v"):
+        if(rcv_message == 'C' || rcv_message == 'V'):
             write_mode = rcv_message;
     }
 
-    while(/*condicion de mensaje para enviar*/){
-        
+    // Enviar el mensaje
+    tx_message[6] = '\n';
+
+    if (write_mode == 'C'){
+        int2ASCII(value);
+    }else{ if(write_mode == 'V'){
+        float2ASCII(voltage);
     }
+
+    setTXMessage(tx_message, 6);
 
     // Logica segun estado del encoder
     switch (encoderFlag) {
@@ -187,7 +200,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             uart_time += 100;
             if (uart_time < UART_ULIMIT):
                 uart_time = UART_ULIMIT; 
-            
+
             break;
 
             break;
@@ -199,6 +212,8 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
                 uart_time = UART_LLIMIT; 
             
             break;
+
+            setUARTPeriod(2*uart_time);
     }
 }
 
@@ -210,3 +225,49 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
                         LOCAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
+
+void float2ASCII(float number){
+    uint8_t integer_digits;
+    integer_digits = (int)log10(number) + 1;
+    uint16_t digit;
+
+    uint8_t i;
+
+    if (integer_digits == 0)
+        integer_digits = 1;
+
+    for (i = 0; i < 4; i++)
+    {
+        digit = (uint16_t) ((number)/pow(10,integer_digits-1-i));
+
+        digit = digit - ((uint16_t) (digit/10))*10;
+
+        if (i>0)
+            tx_message[i+1] = digit + '0';
+        else{
+            tx_message[0] = digit + '0';
+            tx_message[1] = '.'
+        }
+    }
+}
+
+void int2ASCII(uint8_t number){
+    uint8_t integer_digits;
+    integer_digits = (int)log10(number) + 1;
+    uint16_t digit;
+
+    uint8_t i;
+
+    for (i = 0; i < (5 - integer_digits); i++){
+        tx_message[i] = 0;
+    }
+
+    for (i = 5 - integer_digits; i < 5; i++)
+    {
+        digit = (uint16_t) ((number)/pow(10,integer_digits-1-i));
+
+        digit = digit - ((uint16_t) (digit/10))*10;
+
+        tx_message[i] = digit + '0';
+    }
+}
