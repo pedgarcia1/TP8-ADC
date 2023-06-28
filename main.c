@@ -106,7 +106,7 @@ void AppInit(void)
     // Inicializaci�n del display
     displayInit(STATIC);
     adcInit();
-    timerInitialization(13100); // 100ms timer perdios for ADC interrupt
+    timerInitialization(12499); // 100ms timer perdios for ADC interrupt
     timerStart();
     ledsInit(OFF);
     lightState = OFF;

@@ -116,7 +116,7 @@ void send_to_timer_isr (void(*function)(void), unsigned int period) {
 #pragma vector = WDT_VECTOR
 __interrupt void WDT_ISR(void) {
 
-    unsigned int i;
+    uint8_t i;
 
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
     for(i = 0; i<length; i++) {
@@ -134,7 +134,7 @@ __interrupt void WDT_ISR(void) {
 __interrupt void TIMER_ISR(void)
 {
 
-    int i;
+    uint8_t i;
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
     for(i = 0; i<length; i++) {
         timer_vector_ptr[i].counter--;
