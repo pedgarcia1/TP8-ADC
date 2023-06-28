@@ -80,7 +80,7 @@ void send_to_isr (void(*function)(void), unsigned int period) {
     // A�adir la funci�n y su per�odo al vector de ISR
 
     // Chequeo si la función ya está en el vector y reemplazo los nuevos datos
-    int i;
+    uint8_t i;
     for (i = 0; i < length; i++) {
         if (vector_ptr[i].function_ptr == function) {
             vector_ptr[i].counter_reset = period;
@@ -115,6 +115,7 @@ void send_to_timer_isr (void(*function)(void), unsigned int period) {
 
 #pragma vector = WDT_VECTOR
 __interrupt void WDT_ISR(void) {
+
     unsigned int i;
 
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
@@ -127,11 +128,13 @@ __interrupt void WDT_ISR(void) {
     }
 }
 
+
 // Timer A interrupt service routine
 #pragma vector=TIMER0_A0_VECTOR        //Interrupt Service Routine (ISR) for CCR0 (only)
 __interrupt void TIMER_ISR(void)
 {
-    unsigned int i;
+
+    int i;
     // Iterar sobre el vector de ISR y ejecutar las funciones correspondientes
     for(i = 0; i<length; i++) {
         timer_vector_ptr[i].counter--;

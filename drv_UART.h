@@ -11,7 +11,7 @@
  * INCLUDE HEADER FILES
  ******************************************************************************/
 
-
+#include <stdint.h>
 
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
@@ -33,6 +33,9 @@ void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength); //Send ar
 uint8_t getRXStatus();
 void resetRXStatus();
 uint8_t getChar();
+void setUARTPeriod(uint16_t period);
+void UARTPeriodic();
+void setTXMessage(unsigned char *Text, unsigned char Largo);
 
 /*******************************************************************************
  ******************************************************************************/
