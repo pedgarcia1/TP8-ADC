@@ -41,7 +41,7 @@ void readADC(void)
 }
 
 void adc2voltage(void){
-    adc_data.voltage = ((adc_data.vmax - adc_data.vmin)/N_BITS)* ((float)adc_data.value);
+    adc_data.voltage = ((VMAX-VMIN)/N_BITS)* ((float)adc_data.value);
 }
 
 float getVoltage(void){
