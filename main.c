@@ -31,6 +31,14 @@ float voltage;
 uint16_t value;
 uint8_t lightState;
 
+uint16_t uart_time = 800;
+uint8_t write_mode = 'C';
+unsigned char tx_message[6];
+unsigned char rcv_message;
+uint8_t encoderFlag;
+uint8_t rxFlag;
+uint8_t transmitterFlag;
+
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -131,13 +139,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define UART_LLIMIT 100
 #define UART_ULIMIT 2000
 
-uint16_t uart_time = 800;
-uint8_t write_mode = 'C';
-unsigned char tx_message[6];
-unsigned char rcv_message;
-uint8_t encoderFlag;
-uint8_t rxFlag;
-uint8_t transmitterFlag;
+
 
 void appInit(void)
 {
@@ -148,6 +150,8 @@ void appInit(void)
     UART_init();
     ledsInit(OFF);
     lightState = OFF;
+
+
 }   
 
 void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
@@ -201,6 +205,7 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             if (uart_time < UART_ULIMIT)
                 uart_time = UART_ULIMIT; 
 
+            setUARTPeriod(2*uart_time);
             break;
 
         case CCW:
@@ -208,12 +213,13 @@ void appRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             encoderResetStatus(); // Reinicia el estado del encoder
             uart_time -= 100;
             if (uart_time < UART_LLIMIT)
-                uart_time = UART_LLIMIT; 
+                uart_time = UART_LLIMIT;
             
+            setUARTPeriod(2*uart_time);
             break;
 
-            setUARTPeriod(2*uart_time);
     }
+
 }
 
 #endif // EJERCICIO
@@ -233,9 +239,9 @@ void float2ASCII(float number){
 
     uint8_t i;
 
-    if (integer_digits == 0)
+    if (integer_digits == 0){
         integer_digits = 1;
-
+    }
     for (i = 0; i < 4; i++)
     {
         digit = (uint16_t) ((number)/pow(10,integer_digits-1-i));
@@ -260,7 +266,7 @@ void int2ASCII(uint8_t number){
     uint8_t i;
 
     for (i = 0; i < (5 - integer_digits); i++){
-        tx_message[i] = 0;
+        tx_message[i] = '0';
     }
 
     for (i = 5 - integer_digits; i < 5; i++)
