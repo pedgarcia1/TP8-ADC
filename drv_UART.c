@@ -24,7 +24,7 @@
  ******************************************************************************/
 volatile unsigned char RXChar;
 static uint8_t RXFlag;
-unsigned char periodicTX;
+unsigned char *periodicTX;
 unsigned char periodicLength;
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
@@ -50,9 +50,9 @@ unsigned char periodicLength;
 void UART_init(){
 
  /* Use Calibration values for 1MHz Clock DCO*/
- DCOCTL = 0;
- BCSCTL1 = CALBC1_1MHZ;
- DCOCTL = CALDCO_1MHZ;
+ //DCOCTL = 0;
+ //BCSCTL1 = CALBC1_1MHZ;
+ //DCOCTL = CALDCO_1MHZ;
 
  /* Configure Pin Muxing P1.1 RXD and P1.2 TXD */
  P1SEL |= BIT1 | BIT2 ;
@@ -64,9 +64,9 @@ void UART_init(){
 
  /* Configure */
  UCA0CTL1 |= UCSSEL_2; // SMCLK
- UCA0BR0 = 104; // 1MHz 9600
- UCA0BR1 = 0; // 1MHz 9600
- UCA0MCTL = UCBRS0; // Modulation UCBRSx = 1
+ UCA0BR0 = 0x41; // 8MHz 9600
+ UCA0BR1 = 0x03; // 8MHz 9600
+ UCA0MCTL = 2*UCBRS0; // Modulation UCBRSx = 2
 
  /* Take UCA0 out of reset */
  UCA0CTL1 &= ~UCSWRST;
@@ -114,14 +114,15 @@ void UARTPeriodic(){
  // send message periodically
     while(periodicLength--){ // Loop until StringLength == 0 and post decrement
      while(!(IFG2 & UCA0TXIFG)); // Wait for TX buffer to be ready for new data
-     UCA0TXBUF = periodicTX; //Write the character at the location specified py the pointer
+     UCA0TXBUF = *periodicTX; //Write the character at the location specified py the pointer
      periodicTX++; //Increment the TxString pointer to point to the next character
      }
+    UARTSendArray("\n\r",2);
 }
 
 void setTXMessage(unsigned char *Text, unsigned char Largo){
-    periodicTX =* Text;
-    periodicLength=Largo;
+    periodicTX = Text;
+    periodicLength = Largo;
 
 }
 /*******************************************************************************
