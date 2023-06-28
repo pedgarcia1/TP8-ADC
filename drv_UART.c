@@ -55,11 +55,11 @@ void UART_init(){
  DCOCTL = CALDCO_1MHZ;
 
  /* Configure Pin Muxing P1.1 RXD and P1.2 TXD */
- P1SEL = BIT1 | BIT2 ;
- P1SEL2 = BIT1 | BIT2;
- P1DIR = 1<<2;
- P1REN = 1<<1; /* Place UCA0 in Reset to be configured */
- P1OUT = (1<<1) + (1<<2);
+ P1SEL |= BIT1 | BIT2 ;
+ P1SEL2 |= BIT1 | BIT2;
+ P1DIR |= 1<<2;
+ P1REN |= 1<<1; /* Place UCA0 in Reset to be configured */
+ P1OUT |= (1<<1) + (1<<2);
  UCA0CTL1 = UCSWRST;
 
  /* Configure */
@@ -73,7 +73,7 @@ void UART_init(){
 
  IE2 |= UCA0RXIE; // Enable USCI_A0 RX interrupt
 
-__bis_SR_register(GIE); // interrupts enabled
+//__bis_SR_register(GIE); // interrupts enabled
 }
 
 /**

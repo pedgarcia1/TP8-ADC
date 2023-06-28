@@ -145,7 +145,7 @@ void AppInit(void)
     // Inicializaci�n del display
     displayInit(STATIC);
     adcInit();
-    // UART_init();
+    UART_init();
     timerInitialization(TIMER_PERIOD); // 100ms timer perdios for ADC interrupt
     timerStart();
     ledsInit(OFF);
@@ -171,7 +171,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         lightState = OFF;
         ledsInit(OFF);
     }
-/*
+
     // Verificar si se ha cambiado el estado del encoder
     encoderFlag = encoderGetStatus();
     
@@ -220,7 +220,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
             break;
 
     }
- */
+
 }
 
 #endif // EJERCICIO
