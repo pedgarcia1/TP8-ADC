@@ -28,9 +28,6 @@ static uint8_t RXFlag;
 unsigned char *periodicTX;
 unsigned char periodicLength;
 
-
-
-
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -132,7 +129,6 @@ void setTXMessage(unsigned char *Text, unsigned char Largo){
     periodicLength = Largo;
 
 }
-
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS
