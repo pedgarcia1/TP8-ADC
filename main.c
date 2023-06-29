@@ -32,7 +32,7 @@ uint8_t lightState;
 
 uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
-unsigned char tx_message[6];
+unsigned char tx_message[5];
 unsigned char rcv_message;
 uint8_t encoderFlag;
 uint8_t rxFlag;
@@ -44,7 +44,7 @@ uint8_t transmitterFlag;
 
 void AppInit(void);
 void AppRun(void);
-void getDecStr (uint8_t* str, uint8_t len, uint32_t val,uint8_t n);
+void getDecStr (uint8_t* str, uint8_t len, uint32_t val);
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -198,12 +198,12 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
     if (write_mode == 'C'){
         //int2ASCII(value);
-        getDecStr(tx_message, 4, value,0);
+        getDecStr(tx_message, 4, value);
         setTXMessage(tx_message, 5);
 
     }else{
-        getDecStr(tx_message, 5, voltage,2);
-        setTXMessage(tx_message, 6);
+        //float2ASCII(voltage);
+
     }
     //setTXMessage(tx_message, 6);
 
@@ -233,19 +233,14 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
 }
 
-void getDecStr (uint8_t* str, uint8_t len, uint32_t val,uint8_t n)
+void getDecStr (uint8_t* str, uint8_t len, uint32_t val)
 {
   uint8_t i;
 
   for(i=1; i<=len; i++)
   {
-    if(i==len - n+1 & n != 0) {
-        str[len-i]='.';
-    }
-    else{
     str[len-i] = (uint8_t) ((val % 10UL) + '0');
     val/=10;
-    }
   }
 
   str[i-1] = '\0';
