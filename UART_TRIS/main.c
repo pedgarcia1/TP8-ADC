@@ -2,9 +2,6 @@
  * comunicar con la terminal (Putty) */
 
 #include "msp430g2553.h"
-
-//#include <stdio.h>
-
 void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength);
 
 static volatile char data;
@@ -14,27 +11,20 @@ void main(void)
 {
  WDTCTL = WDTPW + WDTHOLD; // Stop WDT
 
- /* Use Calibration values for 1MHz Clock DCO*/
- DCOCTL = 0;
- BCSCTL1 = CALBC1_1MHZ;
- DCOCTL = CALDCO_1MHZ;
+P1DIR |= BIT0 + BIT6; // Set the LEDs on P1.0, P1.6 as outputs
+P1OUT = BIT0; // Set P1.0
 
- /* Configure Pin Muxing P1.1 RXD and P1.2 TXD */
- P1SEL = BIT1 | BIT2 ;
- P1SEL2 = BIT1 | BIT2;
+BCSCTL1 = CALBC1_1MHZ; // Set DCO to 1MHz
+ DCOCTL = CALDCO_1MHZ; // Set DCO to 1MHz
 
- /* Place UCA0 in Reset to be configured */
- UCA0CTL1 = UCSWRST;
-
- /* Configure */
- UCA0CTL1 |= UCSSEL_2; // SMCLK
- UCA0BR0 = 104; // 1MHz 9600
- UCA0BR1 = 0; // 1MHz 9600
+/* Configure hardware UART */
+ P1SEL = BIT1 + BIT2 ; // P1.1 = RXD, P1.2=TXD
+ P1SEL2 = BIT1 + BIT2 ; // P1.1 = RXD, P1.2=TXD
+ UCA0CTL1 |= UCSSEL_2; // Use SMCLK
+ UCA0BR0 = 104; // Set baud rate to 9600 with 1MHz clock (Data Sheet 15.3.13)
+ UCA0BR1 = 0; // Set baud rate to 9600 with 1MHz clock
  UCA0MCTL = UCBRS0; // Modulation UCBRSx = 1
-
- /* Take UCA0 out of reset */
- UCA0CTL1 &= ~UCSWRST;
-
+ UCA0CTL1 &= ~UCSWRST; // Initialize USCI state machine
  IE2 |= UCA0RXIE; // Enable USCI_A0 RX interrupt
 
 __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
@@ -45,26 +35,34 @@ __bis_SR_register(LPM0_bits + GIE); // Enter LPM0, interrupts enabled
 __interrupt void USCI0RX_ISR(void)
 {
 data = UCA0RXBUF;
-UARTSendArray("Comando Recibido: ", 18);
+UARTSendArray("Received command: ", 18);
 UARTSendArray(&data, 1);
 UARTSendArray("\n\r", 2);
 
 switch(data){
- case 'V':
+ case 'R':
  {
-     UARTSendArray("Lectura en Volts", 16);
-     UARTSendArray("\n\r", 2);
+ P1OUT |= BIT0;
  }
  break;
- case 'C':
+ case 'r':
  {
-     UARTSendArray("Lectura en Crudo", 16);
-     UARTSendArray("\n\r", 2);
+ P1OUT &= ~BIT0;
+ }
+ break;
+ case 'G':
+ {
+ P1OUT |= BIT6;
+ }
+ break;
+ case 'g':
+ {
+ P1OUT &= ~BIT6;
  }
  break;
  default:
  {
- UARTSendArray("Comando Desconocido: ", 21);
+ UARTSendArray("Unknown Command: ", 17);
  UARTSendArray(&data, 1);
  UARTSendArray("\n\r", 2);
  }
