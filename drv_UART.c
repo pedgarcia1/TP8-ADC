@@ -64,9 +64,10 @@ void UART_init(){
 
  /* Configure */
  UCA0CTL1 |= UCSSEL_2; // SMCLK
- UCA0BR0 = 104; // 1MHz 9600
- UCA0BR1 = 0; // 1MHz 9600
- UCA0MCTL = UCBRS0; // Modulation UCBRSx = 1
+ UCA0BR0 = 65; // 8MHz 9600
+ UCA0BR1 = 3; // 8MHz 9600 3*256 + 65 = 833
+ UCA0MCTL = 2*UCBRS0; // Modulation UCBRSx = 2
+
 
  /* Take UCA0 out of reset */
  UCA0CTL1 &= ~UCSWRST;
