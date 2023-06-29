@@ -22,10 +22,16 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
+<<<<<<< HEAD:drv_UART.c
 volatile unsigned char RXChar;
 static uint8_t RXFlag;
 unsigned char *periodicTX;
 unsigned char periodicLength;
+=======
+uint8_t RXChar,RXFlag;
+
+
+>>>>>>> parent of 6096004 (UART PIOLA):UART_TRIS/drv_UART.c
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -106,6 +112,7 @@ void resetRXStatus(){
 uint8_t getChar(){
     return RXChar;
 }
+<<<<<<< HEAD:drv_UART.c
 
 void setUARTPeriod(uint16_t period){
     send_to_isr(UARTPeriodic,period);
@@ -126,6 +133,8 @@ void setTXMessage(unsigned char *Text, unsigned char Largo){
     periodicLength = Largo;
 
 }
+=======
+>>>>>>> parent of 6096004 (UART PIOLA):UART_TRIS/drv_UART.c
 /*******************************************************************************
  *******************************************************************************
                         LOCAL FUNCTION DEFINITIONS
