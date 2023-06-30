@@ -9,7 +9,7 @@
 typedef struct 
 {
     volatile uint16_t value;
-    volatile float voltage;
+    volatile uint16_t voltage;
 }adc_t;
 
 

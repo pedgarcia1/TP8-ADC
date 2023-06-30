@@ -184,8 +184,40 @@ void digit2hexa(uint8_t val, uint8_t pos){
     display_show[pos] = digitArray[val];
 }
 
-void setDisplay_float(float value){
+void setDisplay_float(uint16_t value){
+
+
+
     
+    display_dot = 0;
+    uint8_t dig1, dig2, dig3, dig4;
+   // separo los 4 digitos de value en variables distintas
+    if (value > 1000)
+        dig1 = (uint8_t)(value / 1000);
+    else
+        dig1 = 0;
+
+    if (value > 100)
+        dig2 = (uint8_t)((value - dig1 * 1000) / 100);
+    else
+        dig2 = 0;
+
+    if (value > 10)
+        dig3 = (uint8_t)((value - dig1 * 1000 - dig2 * 100) / 10);
+    else
+        dig3 = 0;
+
+    dig4 = (uint8_t)(value - dig1 * 1000 - dig2 * 100 - dig3 * 10);
+
+    // convierto los digitos a hexa
+    digit2hexa(dig1, 0);
+    digit2hexa(dig2, 1);
+    digit2hexa(dig3, 2);
+    digit2hexa(dig4, 3);
+
+
+
+    /*
     uint8_t integer_digits;
     integer_digits = (uint8_t)log10(value) + 1;
     uint16_t digit;
@@ -204,7 +236,7 @@ void setDisplay_float(float value){
     }
 
     display_dot = integer_digits - 1;
-
+    */
 }
 
 /*******************************************************************************

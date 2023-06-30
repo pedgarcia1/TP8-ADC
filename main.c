@@ -34,9 +34,10 @@ uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
 unsigned char tx_message[5];
 unsigned char rcv_message;
-uint8_t encoderFlag;
 uint8_t rxFlag;
 uint8_t transmitterFlag;
+
+uint8_t dummy = 0;
 
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
@@ -142,6 +143,7 @@ void AppInit(void)
     // Inicializaci�n (se ejecuta 1 sola vez al comienzo)
     // Inicializaci�n del display
     displayInit(STATIC);
+    encoderInit();
     adcInit();
     UART_init();
     timerInitialization(TIMER_PERIOD); // 100ms timer perdios for ADC interrupt
@@ -151,10 +153,15 @@ void AppInit(void)
     tx_message[5] = '\0';
     setUARTPeriod(2*uart_time);
 
+
+
 }   
 
 void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
+
+
+
     voltage = getVoltage();
     value = getValue();
 
@@ -171,8 +178,6 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         ledsInit(OFF);
     }
 
-    // Verificar si se ha cambiado el estado del encoder
-    encoderFlag = encoderGetStatus();
     
     // Verificar si hubo un mensaje
     rxFlag = getRXStatus();
@@ -209,7 +214,8 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     //setTXMessage(tx_message, 6);
 
     // Logica segun estado del encoder
-    switch (encoderFlag) {
+    encoderStatus_t aux = encoderGetStatus();
+    switch (aux) {
         case CW:
             // El encoder gira en sentido horario
             encoderResetStatus(); // Reinicia el estado del encoder

@@ -5,7 +5,7 @@
 
 
 #define N_BITS 1024
-float factorEscala = 3.574f; // ((float)(3660 - 0) / 1024)
+#define FACTOR_ESCALA 3.2
 adc_t adc_data;
 
 void adcInit(void)
@@ -39,7 +39,7 @@ void readADC(void)
 }
 
 void adc2voltage(void){
-    adc_data.voltage = factorEscala * (adc_data.value);
+    adc_data.voltage = (uint16_t) (FACTOR_ESCALA * adc_data.value);
 }
 
 uint16_t getVoltage(void){

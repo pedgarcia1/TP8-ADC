@@ -96,7 +96,7 @@ void digit2hexa(uint8_t val, uint8_t pos);
  * @brief Separa un numero float en 4 digitos significativos
  * @param value El numero float que se desea convertir
  */
-void setDisplay_float(float value);
+void setDisplay_float(uint16_t value);
 /*******************************************************************************
  ******************************************************************************/
 
