@@ -76,7 +76,7 @@ void UART_init(){
 
  IE2 |= UCA0RXIE; // Enable USCI_A0 RX interrupt
 
-__bis_SR_register(GIE); // interrupts enabled
+//__bis_SR_register(GIE); // interrupts enabled
 }
 
 /**
@@ -91,9 +91,9 @@ void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength){
  // UARTSendArray(data, 4); // Note because the UART transmits bytes it is necessary to send two bytes for each integer hence the data length is twice the array length
 
 while(ArrayLength--){ // Loop until StringLength == 0 and post decrement
- while(!(IFG2 & UCA0TXIFG)); // Wait for TX buffer to be ready for new data
- UCA0TXBUF = *TxArray; //Write the character at the location specified py the pointer
- TxArray++; //Increment the TxString pointer to point to the next character
+    while(!(IFG2 & UCA0TXIFG)); // Wait for TX buffer to be ready for new data
+    UCA0TXBUF = *TxArray; //Write the character at the location specified py the pointer
+    TxArray++; //Increment the TxString pointer to point to the next character
  }
 }
 
