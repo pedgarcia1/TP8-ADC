@@ -22,10 +22,12 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
+
 volatile unsigned char RXChar;
 static uint8_t RXFlag;
 unsigned char *periodicTX;
 unsigned char periodicLength;
+
 /*******************************************************************************
  * FUNCTION PROTOTYPES FOR PRIVATE FUNCTIONS WITH FILE LEVEL SCOPE
  ******************************************************************************/
@@ -64,9 +66,10 @@ void UART_init(){
 
  /* Configure */
  UCA0CTL1 |= UCSSEL_2; // SMCLK
- UCA0BR0 = 104; // 1MHz 9600
- UCA0BR1 = 0; // 1MHz 9600
- UCA0MCTL = UCBRS0; // Modulation UCBRSx = 1
+ UCA0BR0 = 104; // 8MHz 9600
+ UCA0BR1 = 0; // 8MHz 9600 3*256 + 65 = 833
+ UCA0MCTL = UCBRS0; // Modulation UCBRSx = 2
+
 
  /* Take UCA0 out of reset */
  UCA0CTL1 &= ~UCSWRST;
@@ -105,6 +108,7 @@ void resetRXStatus(){
 uint8_t getChar(){
     return RXChar;
 }
+
 
 void setUARTPeriod(uint16_t period){
     send_to_isr(UARTPeriodic,period);

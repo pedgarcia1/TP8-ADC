@@ -18,7 +18,7 @@
 #include "encoder.h"
 #include "drv_UART.h"
 #include "timer.h"
-#include <math.h>
+
 
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
@@ -27,13 +27,12 @@
 /*******************************************************************************
  * VARIABLES WITH GLOBAL SCOPE
  ******************************************************************************/
-float voltage;
-uint16_t value;
+uint16_t voltage,value;
 uint8_t lightState;
 
 uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
-unsigned char tx_message[6];
+unsigned char tx_message[5];
 unsigned char rcv_message;
 uint8_t encoderFlag;
 uint8_t rxFlag;
@@ -45,8 +44,7 @@ uint8_t transmitterFlag;
 
 void AppInit(void);
 void AppRun(void);
-void float2ASCII(float number);
-void int2ASCII(uint8_t number);
+void getDecStr (uint8_t* str, uint8_t len, uint32_t val,uint8_t n);
 
 /*******************************************************************************
  * STATIC VARIABLES AND CONST VARIABLES WITH FILE LEVEL SCOPE
@@ -199,12 +197,16 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     // Enviar el mensaje
 
     if (write_mode == 'C'){
-        int2ASCII(value);
-    }else{ if(write_mode == 'V'){
-        float2ASCII(voltage);
+        //int2ASCII(value);
+        getDecStr(tx_message, 4, value,0);
+        setTXMessage(tx_message, 5);
+
+    }else{
+        getDecStr(tx_message, 5, voltage,2);
+        setTXMessage(tx_message, 6);
+
     }
-    }
-    setTXMessage(tx_message, sizeof(tx_message)/sizeof(uint8_t));
+    //setTXMessage(tx_message, 6);
 
     // Logica segun estado del encoder
     switch (encoderFlag) {
@@ -232,6 +234,23 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
 }
 
+void getDecStr (uint8_t* str, uint8_t len, uint32_t val,uint8_t n)
+{
+  uint8_t i;
+
+  for(i=1; i<=len; i++)
+  {
+    if(i==len-n+1 & n!=0){
+        str[len-i]='.';}
+    else{
+        str[len-i] = (uint8_t) ((val % 10UL) + '0');
+        val/=10;
+    }
+  }
+
+  str[i-1] = '\0';
+}
+
 #endif // EJERCICIO
 
 
@@ -241,52 +260,5 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
  *******************************************************************************
  ******************************************************************************/
 
-void float2ASCII(float number){
 
-    uint8_t integer_digits;
-    integer_digits = (uint8_t)log10(number) + 1;
-    uint16_t digit;
-
-    uint8_t i;
-
-    if (integer_digits == 0){
-        integer_digits = 1;
-    }
-    for (i = 0; i < 4; i++)
-    {
-        digit = (uint16_t) ((number)/pow(10,integer_digits-1-i));
-
-        digit = digit - ((uint16_t) (digit/10))*10;
-
-        if (i>0){
-            tx_message[i+1] = digit + '0';
-        }
-        else{
-            tx_message[0] = digit + '0';
-            tx_message[1] = '.';
-        }
-    }
-
-}
-
-void int2ASCII(uint8_t number){
-    uint8_t integer_digits;
-    integer_digits = (uint8_t)log10(number) + 1;
-    uint16_t digit;
-
-    uint8_t i;
-
-    for (i = 0; i < (5 - integer_digits); i++){
-        tx_message[i] = '0';
-    }
-
-    for (i = 5 - integer_digits; i < 5; i++)
-    {
-        digit = (uint16_t) ((number)/pow(10,integer_digits-1-i));
-
-        digit = digit - ((uint16_t) (digit/10))*10;
-
-        tx_message[i] = digit + '0';
-    }
-}
 
