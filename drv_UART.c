@@ -52,7 +52,7 @@ uint16_t uart_period;
  *******************************************************************************
  ******************************************************************************/
 
-void UART_init(periodic_flag){
+void UART_init(uint8_t periodic_flag){
 
     /* Use Calibration values for 1MHz Clock DCO*/
     //DCOCTL = 0;
@@ -79,7 +79,7 @@ void UART_init(periodic_flag){
 
     IE2 |= UCA0RXIE; // Enable USCI_A0 RX interrupt
     if(periodic_flag){
-        setUARTPeriod(2*INITIAL_TIME);
+        setUARTPeriod(INITIAL_TIME);
     }
     //__bis_SR_register(GIE); // interrupts enabled
 }
@@ -117,7 +117,7 @@ uint8_t getChar(){
 void setUARTPeriod(uint16_t period){
     // Setea el periodo de trabajo de UART por interrupcion
     uart_period = period;
-    send_to_isr(UARTPeriodic,uart_period);
+    send_to_isr(UARTPeriodic,2*uart_period);
 }
 
 void UARTPeriodic(){
@@ -139,18 +139,18 @@ void setTXMessage(unsigned char *Text, unsigned char Largo){
 
 void incrementUARTPeriod(){
     uart_period += SPEED;
-    if (uart_period < UART_ULIMIT)
+    if (uart_period > UART_ULIMIT)
         uart_period = UART_ULIMIT; 
 
-    setUARTPeriod(2*uart_period);
+    send_to_isr(UARTPeriodic,2*uart_period);
 }
 
 void decrementUARTPeriod(){
     uart_period -= SPEED;
-    if (uart_period > UART_LLIMIT)
+    if (uart_period < UART_LLIMIT)
         uart_period = UART_LLIMIT; 
 
-    setUARTPeriod(2*uart_period);
+    send_to_isr(UARTPeriodic,2*uart_period);
 }
 /*******************************************************************************
  *******************************************************************************
