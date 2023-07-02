@@ -30,7 +30,6 @@
 uint16_t voltage,value;
 uint8_t lightState;
 
-uint16_t uart_time = 800;
 uint8_t write_mode = 'C';
 unsigned char tx_message[5];
 unsigned char rcv_message;
@@ -135,9 +134,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
 #define UPPER_VOLTAGE 2
 #define LOWER_VOLTAGE 1.3
-#define UART_LLIMIT 100
-#define UART_ULIMIT 2000
-#define SPEED 100
+
 
 void AppInit(void)
 {
@@ -146,22 +143,17 @@ void AppInit(void)
     displayInit(STATIC);
     encoderInit();
     adcInit();
-    UART_init();
+    UART_init(START_PERIODIC);
     timerInitialization(TIMER_PERIOD); // 100ms timer perdios for ADC interrupt
     timerStart();
     ledsInit(OFF);
     lightState = OFF;
     tx_message[5] = '\0';
-    setUARTPeriod(2*uart_time);
-
-
-
+    
 }   
 
 void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 {
-
-
 
     voltage = getVoltage();
     value = getValue();
@@ -220,21 +212,13 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         case CW:
             // El encoder gira en sentido horario
             encoderResetStatus(); // Reinicia el estado del encoder
-            uart_time += SPEED;
-            if (uart_time > UART_ULIMIT)
-                uart_time = UART_ULIMIT; 
-
-            setUARTPeriod(2*uart_time);
+            incrementUARTPeriod();
             break;
 
         case CCW:
             // El encoder gira en sentido antihorario
             encoderResetStatus(); // Reinicia el estado del encoder
-            uart_time -= SPEED;
-            if (uart_time < UART_LLIMIT)
-                uart_time = UART_LLIMIT;
-            
-            setUARTPeriod(2*uart_time);
+            decrementUARTPeriod();
             break;
 
     }
