@@ -45,9 +45,6 @@ unsigned char periodicLength;
                         GLOBAL FUNCTION DEFINITIONS
  *******************************************************************************
  ******************************************************************************/
-/**
- * @brief Inicializa el UART
- */
 
 void UART_init(){
 
@@ -79,11 +76,7 @@ void UART_init(){
 //__bis_SR_register(GIE); // interrupts enabled
 }
 
-/**
- * @brief Envia Array por UART
- * @param *TxArray Array a enviar
- * @param ArrayLength Largo del array
- */
+
 void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength){
  // Send number of bytes Specified in ArrayLength in the array at using the hardware UART 0
  // Example usage: UARTSendArray("Hello", 5);
@@ -98,19 +91,23 @@ while(ArrayLength--){ // Loop until StringLength == 0 and post decrement
 }
 
 uint8_t getRXStatus(){
+    // Devuelve el estado del flag de recepcion
     return RXFlag;
 }
 
 void resetRXStatus(){
+    // Resetea el flag de recepcion a 0 (no hay recepcion)
     RXFlag=0;
 }
 
 uint8_t getChar(){
+    // Devuelve el caracter recibido
     return RXChar;
 }
 
 
 void setUARTPeriod(uint16_t period){
+    // Setea el periodo de trabajo de UART por interrupcion
     send_to_isr(UARTPeriodic,period);
 }
 
@@ -125,6 +122,7 @@ void UARTPeriodic(){
 }
 
 void setTXMessage(unsigned char *Text, unsigned char Largo){
+    // Setea el mensaje a enviar por UART
     periodicTX = Text;
     periodicLength = Largo;
 

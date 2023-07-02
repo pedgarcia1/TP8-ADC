@@ -28,19 +28,50 @@
 /*******************************************************************************
  * FUNCTION PROTOTYPES WITH GLOBAL SCOPE
  ******************************************************************************/
-void UART_init(); //INICIALIZA EL UART
-void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength); //Send array to UART
+
+/**
+* @brief Inicializa el UART
+*/
+void UART_init(); 
+
+/**
+ * @brief Envia Array por UART
+ * @param *TxArray Array a enviar
+ * @param ArrayLength Largo del array
+ */
+void UARTSendArray(unsigned char *TxArray, unsigned char ArrayLength);
+
+/**
+ * @brief Devuelve el estado del flag de recepcion 
+*/
 uint8_t getRXStatus();
+
+/**
+ * @brief Resetea el flag de recepcion 
+*/
 void resetRXStatus();
+
+/**
+ * @brief Devuelve el caracter recibido 
+*/
 uint8_t getChar();
 
-
+/**
+ * @brief Setea el periodo de trabajo de UART
+ * @param period Periodo de trabajo 
+*/
 void setUARTPeriod(uint16_t period);
-void UARTPeriodic();
-void setTXMessage(unsigned char *Text, unsigned char Largo);
 
-void setUARTPeriod(uint16_t period);
+/**
+* @brief Funcion periodica de UART
+*/
 void UARTPeriodic();
+
+/**
+ * @brief Setea el mensaje a enviar por UART
+ * @param Text Mensaje a enviar
+ * @param Largo Largo del mensaje
+*/
 void setTXMessage(unsigned char *Text, unsigned char Largo);
 
 
