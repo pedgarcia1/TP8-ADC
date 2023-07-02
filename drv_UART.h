@@ -16,7 +16,8 @@
 /*******************************************************************************
  * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
  ******************************************************************************/
-
+#define START_PERIODIC 1
+#define NO_PERIODIC 0
 /*******************************************************************************
  * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
  ******************************************************************************/
@@ -32,7 +33,7 @@
 /**
 * @brief Inicializa el UART
 */
-void UART_init(); 
+void UART_init(uint8_t periodic_flag); 
 
 /**
  * @brief Envia Array por UART
@@ -74,7 +75,15 @@ void UARTPeriodic();
 */
 void setTXMessage(unsigned char *Text, unsigned char Largo);
 
+/**
+ * @brief Incrementa el periodo de trabajo de UART en 100 ms
+*/
+void incrementUARTPeriod();
 
+/**
+ * @brief Decrementa el periodo de trabajo de UART en 100 ms
+*/
+void decrementUARTPeriod();
 /*******************************************************************************
  ******************************************************************************/
 
