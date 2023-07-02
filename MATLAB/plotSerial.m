@@ -5,7 +5,7 @@ clear all
 instrreset  %(Instrument Reset)
 % fclose(instrfindall)
 
-ser = serial('COM1');        % Windows port style
+ser = serial('COM5');        % Windows port style
 % ser = serial('/dev/ttyUSB0');   % Linux port style
 
 % set object properties

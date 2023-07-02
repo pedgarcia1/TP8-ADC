@@ -133,7 +133,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #elif EJERCICIO == 3
 
 #define UPPER_VOLTAGE 2
-#define LOWER_VOLTAGE 1.3
+#define LOWER_VOLTAGE 1
 
 
 void AppInit(void)
@@ -160,12 +160,12 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 
     setDisplay_float(voltage);
 
-    if (lightState == OFF && voltage > UPPER_VOLTAGE)
+    if (lightState == OFF && (((uint8_t)(voltage / 1000)) < LOWER_VOLTAGE))
     {
         lightState = ON;
         ledsInit(ON);
     }
-    else if (lightState == ON && voltage < LOWER_VOLTAGE)
+    else if (lightState == ON &&  (((uint8_t)(voltage / 1000)) > UPPER_VOLTAGE))
     {
         lightState = OFF;
         ledsInit(OFF);
