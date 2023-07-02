@@ -1,11 +1,36 @@
+/***************************************************************************//**
+  @file     ADC.c
+  @brief    Driver de ADC
+  @Author   Grupo 5
+ ******************************************************************************/
+
+/*******************************************************************************
+ * INCLUDE HEADER FILES
+ ******************************************************************************/
+
 #include "ADC.h" 
 #include "msp430g2553.h"
 #include "timer.h"
 #include "isr.h"
 
-
+/*******************************************************************************
+ * CONSTANT AND MACRO DEFINITIONS USING #DEFINE
+ ******************************************************************************/
 #define N_BITS 1024
 #define FACTOR_ESCALA 3.2
+
+/*******************************************************************************
+ * ENUMERATIONS AND STRUCTURES AND TYPEDEFS
+ ******************************************************************************/
+typedef struct 
+{
+    volatile uint16_t value;
+    volatile uint16_t voltage;
+}adc_t;
+
+/*******************************************************************************
+ * VARIABLES WITH GLOBAL SCOPE
+ ******************************************************************************/
 adc_t adc_data;
 
 void adcInit(void)
@@ -39,13 +64,16 @@ void readADC(void)
 }
 
 void adc2voltage(void){
+	// Conversion a voltaje
     adc_data.voltage = (uint16_t) (FACTOR_ESCALA * adc_data.value);
 }
 
 uint16_t getVoltage(void){
+	// Devolver el valor de la lectura del ADC en voltaje
 	return adc_data.voltage;
 }
 
 uint16_t getValue(void){
+	// Devolver el valor del ADC en bits
 	return adc_data.value;
 }
