@@ -80,6 +80,8 @@ void systemInitFirst(void)
 void boardInit(void)
 {
     // TODO: COMPLETAR CON LA CONFIGURACIÓN DE LOS PINES RESTANTES UTILIZADOS
+    P2SEL &= ~BIT6; // Pines 2.6 y 2.7 en funcionalidad gpio
+    P2SEL &= ~BIT7;
 }
 
 /**
