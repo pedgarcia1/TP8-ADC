@@ -62,10 +62,13 @@ void setDisplay(uint8_t show[]);
 void setActive(uint8_t active);
 
 /**
- * @brief Rutina de interrupci�n para el control del display
+ * @brief Rutina de interrupci�n para el control del display con parpadeo del digito activo
  */
 void displayBlinkISR(void);
 
+/**
+ * @brief Rutina de interrupci�n para el control del display sin parpadeo
+ */
 void displayStaticISR(void);
 
 /**

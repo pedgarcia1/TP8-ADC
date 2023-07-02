@@ -185,9 +185,6 @@ void digit2hexa(uint8_t val, uint8_t pos){
 }
 
 void setDisplay_float(uint16_t value){
-
-
-
     
     display_dot = 0;
     uint8_t dig1, dig2, dig3, dig4;
@@ -215,28 +212,6 @@ void setDisplay_float(uint16_t value){
     digit2hexa(dig3, 2);
     digit2hexa(dig4, 3);
 
-
-
-    /*
-    uint8_t integer_digits;
-    integer_digits = (uint8_t)log10(value) + 1;
-    uint16_t digit;
-
-    uint8_t i;
-
-    if (integer_digits == 0)
-        integer_digits = 1;
-
-    for (i = 0; i < 4; i++)
-    {
-        digit = (uint16_t) ((value)/pow(10,integer_digits-1-i));
-
-        digit = digit - ((uint16_t) (digit/10))*10;
-        digit2hexa(digit, i);
-    }
-
-    display_dot = integer_digits - 1;
-    */
 }
 
 /*******************************************************************************
