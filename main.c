@@ -137,6 +137,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
 #define LOWER_VOLTAGE 1.3
 #define UART_LLIMIT 100
 #define UART_ULIMIT 2000
+#define SPEED 100
 
 void AppInit(void)
 {
@@ -214,13 +215,13 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
     //setTXMessage(tx_message, 6);
 
     // Logica segun estado del encoder
-    encoderStatus_t aux = encoderGetStatus();
-    switch (aux) {
+    
+    switch (encoderGetStatus()) {
         case CW:
             // El encoder gira en sentido horario
             encoderResetStatus(); // Reinicia el estado del encoder
-            uart_time += 100;
-            if (uart_time < UART_ULIMIT)
+            uart_time += SPEED;
+            if (uart_time > UART_ULIMIT)
                 uart_time = UART_ULIMIT; 
 
             setUARTPeriod(2*uart_time);
@@ -229,7 +230,7 @@ void AppRun(void) // Loop (se ejecuta constantemente en un ciclo infinito)
         case CCW:
             // El encoder gira en sentido antihorario
             encoderResetStatus(); // Reinicia el estado del encoder
-            uart_time -= 100;
+            uart_time -= SPEED;
             if (uart_time < UART_LLIMIT)
                 uart_time = UART_LLIMIT;
             
