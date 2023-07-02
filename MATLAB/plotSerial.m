@@ -5,11 +5,10 @@ clear all
 instrreset  %(Instrument Reset)
 % fclose(instrfindall)
 
-ser = serial('COM6');        % Windows port style
+ser = serial('COM1');        % Windows port style
 % ser = serial('/dev/ttyUSB0');   % Linux port style
 
 % set object properties
-
 ser.timeout=3;
 set(ser, 'Terminator', 10); % set communication string to end on ASCII 13
 % Ascii 13->CR  Ascii 10-LF (default)
@@ -18,27 +17,24 @@ set(ser, 'StopBits', 1);
 set(ser, 'DataBits', 8);
 set(ser, 'Parity', 'none');
 
-% Sample code 
-
-fopen(ser);             % open the serial port connection
-
 reply = 'X';
 while (reply~='C' && reply~='V')
     reply = input("Select display mode [V/C]: ","s");
 end
-fprintf(ser,"%c",reply);
 
+fopen(ser);             % open the serial port connection
+fprintf(ser,"%c",reply);
 answer= fscanf(ser);    % wait for answer o timeout what comes first
 disp(answer) % show  response  
-answer2 = fscanf(ser);
-disp(answer2)
 
 figure
 hold off
 if reply == 'C'
     ylabel("Datos en crudo")
+    ylim([0 1023])
 elseif reply == 'V'
     ylabel("Voltaje [V]")
+    ylim([0 3.66])
 end
 data = [];
 continuar = true;
@@ -58,7 +54,7 @@ while true
     end
 
     plot(data);
-    title(sprintf("Tiempo entre bytes: %f s",tStop))
+    title(sprintf("Tiempo entre datos: %f s",tStop))
 
     drawnow
     %     counter = counter + 1;
