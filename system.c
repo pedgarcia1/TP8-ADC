@@ -62,7 +62,7 @@ void systemInitFirst(void)
 #elif DCOCLK_FREQ_HZ == 12000000UL
     BCSCTL1 = CALBC1_12MHZ;
     DCOCTL = CALDCO_12MHZ;
-#elif DCOCLK_FREQ_HZ == 61000000UL
+#elif DCOCLK_FREQ_HZ == 16000000UL
     BCSCTL1 = CALBC1_16MHZ;
     DCOCTL = CALDCO_16MHZ;
 #else
@@ -74,23 +74,23 @@ void systemInitFirst(void)
 }
 
 /**
- * @brief Inicializa los periféricos y configuraciones de la placa.
- *        TODO: Completar con la configuración de los pines restantes utilizados.
+ * @brief Inicializa los perifï¿½ricos y configuraciones de la placa.
+ *        TODO: Completar con la configuraciï¿½n de los pines restantes utilizados.
  */
 void boardInit(void)
 {
-    // TODO: COMPLETAR CON LA CONFIGURACIÓN DE LOS PINES RESTANTES UTILIZADOS
+    // TODO: COMPLETAR CON LA CONFIGURACIï¿½N DE LOS PINES RESTANTES UTILIZADOS
     P2SEL &= ~BIT6; // Pines 2.6 y 2.7 en funcionalidad gpio
     P2SEL &= ~BIT7;
 }
 
 /**
- * @brief Realiza los últimos pasos de inicialización del sistema del MCU.
- *        Configura el intervalo del temporizador de watchdog y habilita la interrupción.
+ * @brief Realiza los ï¿½ltimos pasos de inicializaciï¿½n del sistema del MCU.
+ *        Configura el intervalo del temporizador de watchdog y habilita la interrupciï¿½n.
  */
 void systemInitLast(void)
 {
-    WDTCTL = WDT_MDLY_0_5; // Modo de temporizador de intervalo; según la selección del intervalo
+    WDTCTL = WDT_MDLY_0_5; // Modo de temporizador de intervalo; segï¿½n la selecciï¿½n del intervalo
     IE1 |= WDTIE; // Habilitar el bit WDTIE
     enable_interrupts(); // Habilitar interrupciones generales
 }
