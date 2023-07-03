@@ -1,7 +1,7 @@
 /***************************************************************************//**
   @file     gpio.c
   @brief    Servicios simples de pines GPIO, similares a Arduino
-  @author   Nicolás Magliola
+  @author   Nicolï¿½s Magliola
  ******************************************************************************/
 
 /*******************************************************************************
@@ -178,6 +178,24 @@ uint8_t gpioRead(gpio_t pin)
     }
 
     return value;
+}
+
+
+void gpioWriteMaskedByte (uint8_t byte, uint16_t mask) {
+
+    uint8_t j = 0, i = 0;
+    uint16_t result = 0;
+
+        for (i = 0; i < 16; i++) {
+            if ((mask & (1 << i) )== (1 << i)) {
+                result |= (((byte & (1 << j)) == (1<<j)) << i);
+                j++;
+        } 
+    }
+
+    P1OUT = (P1OUT & ~mask) | result; // (P1OUT & ~mask) se asegura de que los bits que no se quieren modificar se mantengan igual y se modifiquen solo los de la mascara.
+
+    P2OUT = (P2OUT & ~mask) | ((result & 0xFF00) >> 8);
 }
 
 

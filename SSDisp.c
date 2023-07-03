@@ -7,7 +7,7 @@
 /*******************************************************************************
  * INCLUDE HEADER FILES
  ******************************************************************************/
-#include <msp430.h>
+#include "msp430g2553.h"
 #include "gpio.h"
 #include "SSDisp.h"
 #include "board.h"
@@ -44,6 +44,7 @@ uint8_t frame;
 uint16_t flag_active;
 uint8_t show[4];
 uint8_t display_dot;
+uint16_t disp_msk;
 
 /*******************************************************************************
  *******************************************************************************
@@ -71,6 +72,15 @@ void displayInit(uint8_t selected_mode){
         send_to_isr(displayBlinkISR, 10);
     else if(selected_mode == STATIC)
         send_to_isr(displayStaticISR, 10);
+
+    ADD2MSK(Disp_a, disp_msk);
+    ADD2MSK(Disp_b, disp_msk);
+    ADD2MSK(Disp_c, disp_msk);
+    ADD2MSK(Disp_d, disp_msk);
+    ADD2MSK(Disp_e, disp_msk);
+    ADD2MSK(Disp_f, disp_msk);
+    ADD2MSK(Disp_g, disp_msk);
+    
 }
 
 /**
@@ -80,17 +90,14 @@ void displayInit(uint8_t selected_mode){
  */
 void printDigit(uint8_t pos){
     // Configurar los pines del display para mostrar el d�gito correspondiente
-    gpioWrite(Disp_a, display_show[pos] & 1 << 0);
-    gpioWrite(Disp_b, display_show[pos] & 1 << 1);
-    gpioWrite(Disp_c, display_show[pos] & 1 << 2);
-    gpioWrite(Disp_d, display_show[pos] & 1 << 3);
-    gpioWrite(Disp_e, display_show[pos] & 1 << 4);
-    gpioWrite(Disp_f, display_show[pos] & 1 << 5);
-    gpioWrite(Disp_g, display_show[pos] & 1 << 6);
-    gpioWrite(Disp_dot, pos == display_dot);
-
+    
+    gpioWriteMaskedByte(display_show[pos], disp_msk); 
     gpioWrite(Disp_sel0, pos & 1 << 0);
     gpioWrite(Disp_sel1, pos & 1 << 1);
+
+    gpioWrite(Disp_dot, pos == display_dot);
+
+    
 }
 
 /**
