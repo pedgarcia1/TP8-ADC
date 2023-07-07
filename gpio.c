@@ -181,13 +181,12 @@ uint8_t gpioRead(gpio_t pin)
 }
 
 
-void gpioWriteMaskedByte (uint16_t value, uint16_t mask) {
-
-
+void gpioWritePorts (uint16_t value, uint16_t mask) {
 
     uint8_t j = 0, i = 0, k = 0;
     uint16_t result = 0;
 
+    // Asigno los valores de value a result en el orden que corresponde segun la mascara
         for (k = 16; k > 0; k--) {
             i = 16 - k;
             if ((mask & (1 << i) )== (1 << i)) {
@@ -195,10 +194,11 @@ void gpioWriteMaskedByte (uint16_t value, uint16_t mask) {
                 j++;
         } 
     }
-    P1OUT = (P1OUT & ~mask); // (P1OUT & ~mask) se asegura de que los bits que no se quieren modificar se mantengan igual y se modifiquen solo los de la mascara.
-    P2OUT = (P2OUT & ~(mask >> 8));
 
-    P1OUT |= result;
+    P1OUT &= ~mask; // Apago los bits que estan en la mascara
+    P2OUT &= ~(mask >> 8); 
+
+    P1OUT |= result; // Prendo los bits que estan en result
     P2OUT |= (result >> 8);
 }
 

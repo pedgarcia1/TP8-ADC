@@ -92,15 +92,16 @@ void printDigit(uint8_t pos){
     // Configurar los pines del display para mostrar el d�gito correspondiente
     
 
-    gpioWriteMaskedByte(0, disp_msk);
+    gpioWritePorts(0, disp_msk); // Apagar el display
     gpioWrite(Disp_dot, 0);
 
-    gpioWrite(Disp_sel0, pos & 1 << 0);
+    gpioWrite(Disp_sel0, pos & 1 << 0); // Seleccionar el digito a mostrar
     gpioWrite(Disp_sel1, pos & 1 << 1);
 
 
-    gpioWriteMaskedByte(display_show[pos], disp_msk);
+    gpioWritePorts(display_show[pos], disp_msk); // Mostrar el nuevo digito
     gpioWrite(Disp_dot, pos == display_dot);
+
 
 
     

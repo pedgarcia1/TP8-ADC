@@ -37,6 +37,15 @@
 #define PIN2NUM(pi)         ((pi) & 0x07)
 
 
+
+// Generador de Mascaras
+// Agrega el pin a la máscara.
+// Ej: Si quiero generar una mascara para los pines 1.3 y 2.1 entonces escribo:
+// ADD2MSK(PORTNUM2PIN(1, 3), myMask)
+// ADD2MSK(PORTNUM2PIN(2, 1), myMask)
+// La mascara myMask quedará con el valor 0b01001000 00000010
+// myMask tiene que ser de 16bits
+// Modificacion by Teo. Consultar ante dudas.
 #define ADD2MSK(p, msk) \
     do { \
         if ((((p) & 0xF0) >> 4) == 1) { \
@@ -90,14 +99,16 @@ void gpioToggle(gpio_t pin);
  */
 uint8_t gpioRead(gpio_t pin);
 
+
 /**
- * @brief Escribe un valor de 8 bits en los pines especificados en la mascara. La mascara es de 16 bits porque controla los dos puertos a la vez. Los 8 menos significativos corresponden al puerto 1 y los 8 mas significativos al puerto 2.
- * @param byte Valor de 8 bits a escribir en los pines
+ * @brief Escribe un valor en los pines especificados en la mascara de forma simultanea. La mascara es de 16 bits porque controla los dos puertos a la vez. Los 8 menos significativos corresponden al puerto 1 y los 8 mas significativos al puerto 2.
+ * @param value Valor que se desea escribir en los pines. El largo corresponden a los pines especificados en la mascara.
  * @param mask Mascara de 16 bits que indica en que pines se debe escribir. Un 1 en la mascara indica que se debe escribir en el pin correspondiente.
  * @return
  * @note Modificacion by Teo. Consultar ante dudas.
+ * @note Ejemplo: si quiero que el pin P1.4 y P2.0 se ponga en HIGH y el pin P2.6 en LOW, debo llamar a la funcion de la siguiente manera: gpioWritePorts(0b011, 0b010000100010000); Es decir, value tiene lo valores de 0 y 1 que quiero asignar correspondientes en orden con como aparecen los 1 en la mascara.
  */
-void gpioWriteMaskedByte (uint16_t byte, uint16_t mask);
+void gpioWritePorts (uint16_t value, uint16_t mask);
 
 /*******************************************************************************
  ******************************************************************************/
