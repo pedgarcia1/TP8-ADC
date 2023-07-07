@@ -69,9 +69,9 @@ void displayInit(uint8_t selected_mode){
     gpioMode (Disp_sel1, OUTPUT);
 
     if (selected_mode == BLINK)
-        send_to_isr(displayBlinkISR, 10);
+        send_to_isr(displayBlinkISR, 5);
     else if(selected_mode == STATIC)
-        send_to_isr(displayStaticISR, 10);
+        send_to_isr(displayStaticISR, 5);
 
     ADD2MSK(Disp_a, disp_msk);
     ADD2MSK(Disp_b, disp_msk);
@@ -91,11 +91,17 @@ void displayInit(uint8_t selected_mode){
 void printDigit(uint8_t pos){
     // Configurar los pines del display para mostrar el d�gito correspondiente
     
-    gpioWriteMaskedByte(display_show[pos], disp_msk); 
+
+    gpioWriteMaskedByte(0, disp_msk);
+    gpioWrite(Disp_dot, 0);
+
     gpioWrite(Disp_sel0, pos & 1 << 0);
     gpioWrite(Disp_sel1, pos & 1 << 1);
 
+
+    gpioWriteMaskedByte(display_show[pos], disp_msk);
     gpioWrite(Disp_dot, pos == display_dot);
+
 
     
 }

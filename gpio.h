@@ -97,7 +97,7 @@ uint8_t gpioRead(gpio_t pin);
  * @return
  * @note Modificacion by Teo. Consultar ante dudas.
  */
-void gpioWriteMaskedByte (uint8_t byte, uint16_t mask);
+void gpioWriteMaskedByte (uint16_t byte, uint16_t mask);
 
 /*******************************************************************************
  ******************************************************************************/
